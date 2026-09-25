@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="shellRoot" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.codecanvas.controller.MainShellController"
+            stylesheets="@style.css"
+            prefWidth="1100" prefHeight="750">
+
+    <top>
+        <VBox styleClass="header-bar">
+            <HBox spacing="14" alignment="CENTER_LEFT" styleClass="nav-header">
+                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                
+                <Button fx:id="backButton" text="← Back" styleClass="back-btn" visible="false" managed="false"/>
+                
+                <Label text="CodeCanvas" styleClass="brand-logo"/>
+                <Label text="|" styleClass="separator-label"/>
+                <Label fx:id="screenTitleLabel" text="Algorithm Visualizer" styleClass="header-title"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <HBox spacing="8" alignment="CENTER_RIGHT">
+                    <Label text="Theme:" styleClass="subtle-label"/>
+                    <ChoiceBox fx:id="globalThemeChoiceBox" prefWidth="95"/>
+                    <Button fx:id="profileHeaderButton" text="👤 Profile" styleClass="profile-header-btn" 
+                            onAction="#onProfileClicked" visible="false" managed="false"/>
+                    <Button fx:id="logoutButton" text="Logout" styleClass="logout-btn" 
+                            onAction="#onLogoutClicked" visible="false" managed="false"/>
+                </HBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentHost" styleClass="content-area"/>
+    </center>
+
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT">
+            <padding><Insets top="4" right="14" bottom="4" left="14"/></padding>
+            <Label fx:id="globalStatusLabel" text="CodeCanvas Initialized"/>
+        </HBox>
+    </bottom>
+</BorderPane>

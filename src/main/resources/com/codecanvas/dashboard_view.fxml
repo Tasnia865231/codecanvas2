@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="14" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.codecanvas.controller.DashboardController"
+      styleClass="dashboard-container">
+    <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+    <!-- Top Dashboard Header with Search Bar & Profile Shortcut (Figure 2) -->
+    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="card-panel">
+        <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+        <Label text="🔍" styleClass="search-icon"/>
+        <TextField fx:id="searchField" promptText="Search algorithms (BFS, DFS, Dijkstra, Floyd-Warshall, Bellman-Ford...)" 
+                   HBox.hgrow="ALWAYS" styleClass="search-input"/>
+        <Button fx:id="clearSearchBtn" text="Clear" styleClass="secondary-btn"/>
+
+        <Separator orientation="VERTICAL"/>
+
+        <Button fx:id="profileShortcutBtn" text="👤 Profile &amp; Lab" styleClass="primary-btn" 
+                onAction="#onProfileShortcutClicked"/>
+    </HBox>
+
+    <!-- Main Content Area: Left Category TreeView, Right Algorithms TableView -->
+    <SplitPane dividerPositions="0.25" VBox.vgrow="ALWAYS" styleClass="dashboard-split-pane">
+        
+        <!-- Left: Category TreeView & Quick Filters -->
+        <VBox spacing="8" styleClass="sidebar-panel">
+            <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+            <Label text="Algorithm Categories" styleClass="section-title"/>
+            <Label fx:id="activeFilterLabel" text="Category: All" styleClass="subtle-label"/>
+            
+            <TreeView fx:id="categoryTreeView" VBox.vgrow="ALWAYS" styleClass="category-tree"/>
+        </VBox>
+
+        <!-- Right: Algorithms TableView & Inspection Bar -->
+        <VBox spacing="10" styleClass="table-panel">
+            <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Algorithm Catalog" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="resultCountLabel" text="Loading algorithms..." styleClass="subtle-label"/>
+            </HBox>
+
+            <TableView fx:id="algorithmTable" VBox.vgrow="ALWAYS" styleClass="modern-table">
+                <columns>
+                    <TableColumn fx:id="nameCol" text="Algorithm" prefWidth="150"/>
+                    <TableColumn fx:id="categoryCol" text="Category" prefWidth="130"/>
+                    <TableColumn fx:id="timeCol" text="Time Complexity" prefWidth="140"/>
+                    <TableColumn fx:id="spaceCol" text="Space Complexity" prefWidth="130"/>
+                    <TableColumn fx:id="descCol" text="Summary Description" prefWidth="320"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Label text="Tip: Double-click any row to open Detail Hub" styleClass="subtle-label"/>
+                <Button fx:id="openDetailBtn" text="Open Detail Hub →" styleClass="accent-btn" 
+                        disable="true" onAction="#onOpenDetailClicked"/>
+            </HBox>
+        </VBox>
+
+    </SplitPane>
+</VBox>

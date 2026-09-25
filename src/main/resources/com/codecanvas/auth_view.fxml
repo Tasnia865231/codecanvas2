@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.codecanvas.controller.AuthController"
+      styleClass="auth-container">
+    <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
+
+    <!-- Header Brand Banner -->
+    <VBox alignment="CENTER" spacing="6">
+        <Label text="CodeCanvas" styleClass="auth-title"/>
+        <Label text="Interactive Algorithm Visualizer for CS Students" styleClass="auth-subtitle"/>
+    </VBox>
+
+    <!-- Authentication Card with Dual Mode (Figure 1) -->
+    <VBox maxWidth="480" styleClass="card-panel">
+        <TabPane fx:id="authTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="auth-tabs">
+            
+            <!-- LOGIN TAB -->
+            <Tab fx:id="loginTab" text="Sign In">
+                <VBox spacing="14" styleClass="tab-content-box">
+                    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                    <Label text="Welcome Back" styleClass="card-heading"/>
+                    <Label text="Sign in with your campus account or demo credentials (student / Student123!)" 
+                           wrapText="true" styleClass="subtle-label"/>
+
+                    <VBox spacing="6">
+                        <Label text="Username" styleClass="form-label"/>
+                        <TextField fx:id="loginUsernameField" promptText="Enter your username" styleClass="form-input"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="Password" styleClass="form-label"/>
+                        <HBox spacing="6" alignment="CENTER_LEFT">
+                            <StackPane HBox.hgrow="ALWAYS">
+                                <PasswordField fx:id="loginPasswordField" promptText="Enter your password" styleClass="form-input"/>
+                                <TextField fx:id="loginPasswordVisibleField" promptText="Enter your password" 
+                                           styleClass="form-input" visible="false" managed="false"/>
+                            </StackPane>
+                            <Button fx:id="loginPasswordToggleBtn" text="Show" styleClass="secondary-btn" 
+                                    onAction="#onToggleLoginPassword"/>
+                        </HBox>
+                    </VBox>
+
+                    <Label fx:id="loginErrorLabel" wrapText="true" styleClass="error-label"/>
+
+                    <Button fx:id="loginSubmitBtn" text="Sign In to CodeCanvas" styleClass="primary-btn" 
+                            maxWidth="Infinity" onAction="#onLoginSubmit"/>
+                </VBox>
+            </Tab>
+
+            <!-- SIGN-UP TAB -->
+            <Tab fx:id="signUpTab" text="Create Account">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane-clean">
+                    <VBox spacing="12" styleClass="tab-content-box">
+                        <padding><Insets top="16" right="24" bottom="20" left="24"/></padding>
+
+                        <Label text="Create Student Account" styleClass="card-heading"/>
+                        <Label text="Register to bookmark algorithm notes, code solutions, and track simulations." 
+                               wrapText="true" styleClass="subtle-label"/>
+
+                        <VBox spacing="4">
+                            <Label text="Full Name" styleClass="form-label"/>
+                            <TextField fx:id="signUpFullNameField" promptText="e.g., Alex Johnson" styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Username" styleClass="form-label"/>
+                            <TextField fx:id="signUpUsernameField" promptText="Choose a unique username" styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Email" styleClass="form-label"/>
+                            <TextField fx:id="signUpEmailField" promptText="student@university.edu" styleClass="form-input"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Password" styleClass="form-label"/>
+                            <HBox spacing="6" alignment="CENTER_LEFT">
+                                <StackPane HBox.hgrow="ALWAYS">
+                                    <PasswordField fx:id="signUpPasswordField" promptText="Strong password" styleClass="form-input"/>
+                                    <TextField fx:id="signUpPasswordVisibleField" promptText="Strong password" 
+                                               styleClass="form-input" visible="false" managed="false"/>
+                                </StackPane>
+                                <Button fx:id="signUpPasswordToggleBtn" text="Show" styleClass="secondary-btn" 
+                                        onAction="#onToggleSignUpPassword"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Real-time Password Rules Checklist (Figure 1 Requirement) -->
+                        <VBox spacing="3" styleClass="password-rules-box">
+                            <padding><Insets top="6" right="8" bottom="6" left="8"/></padding>
+                            <Label text="Password Requirements:" styleClass="rules-title"/>
+                            <Label fx:id="reqLengthLabel" text="○ At least 8 characters" styleClass="rule-item"/>
+                            <Label fx:id="reqUpperLabel" text="○ At least one uppercase letter (A-Z)" styleClass="rule-item"/>
+                            <Label fx:id="reqLowerLabel" text="○ At least one lowercase letter (a-z)" styleClass="rule-item"/>
+                            <Label fx:id="reqDigitLabel" text="○ At least one number (0-9)" styleClass="rule-item"/>
+                            <Label fx:id="reqSpecialLabel" text="○ At least one special symbol (!@#$%...)" styleClass="rule-item"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Confirm Password" styleClass="form-label"/>
+                            <PasswordField fx:id="signUpConfirmPasswordField" promptText="Confirm password" styleClass="form-input"/>
+                        </VBox>
+
+                        <Label fx:id="signUpErrorLabel" wrapText="true" styleClass="error-label"/>
+
+                        <Button fx:id="signUpSubmitBtn" text="Register Account" styleClass="primary-btn" 
+                                maxWidth="Infinity" onAction="#onSignUpSubmit"/>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+        </TabPane>
+    </VBox>
+</VBox>

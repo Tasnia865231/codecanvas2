@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.MediaView?>
+
+<VBox spacing="14" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.codecanvas.controller.AlgorithmDetailController"
+      styleClass="detail-container">
+    <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+
+    <!-- Top Metadata Bar: Title, Tags, Actions (Figure 3 & 4) -->
+    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="card-panel">
+        <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="algoTitleLabel" text="Algorithm Title" styleClass="detail-title"/>
+                <Label fx:id="categoryBadgeLabel" text="Category" styleClass="badge-pill"/>
+            </HBox>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label fx:id="timeComplexityLabel" text="Time: O(V + E)" styleClass="complexity-tag"/>
+                <Label fx:id="spaceComplexityLabel" text="Space: O(V)" styleClass="complexity-tag"/>
+                <Label fx:id="actionFeedbackLabel" text="" styleClass="feedback-label"/>
+            </HBox>
+        </VBox>
+
+        <!-- Figure 4 Actions: Copy Code & Save Icon Buttons -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button fx:id="copyCodeBtn" text="📋 Copy Code" styleClass="secondary-btn" visible="false" managed="false"/>
+            <Button fx:id="saveBookmarkBtn" text="☆ Save" styleClass="primary-btn"/>
+        </HBox>
+    </HBox>
+
+    <!-- Navigation Bar: Three Core View Triggers -> [Algorithm], [Code], [Simulator] -->
+    <HBox spacing="6" alignment="CENTER_LEFT" styleClass="trigger-bar">
+        <ToggleButton fx:id="algoViewTrigger" text="[ Algorithm ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="codeViewTrigger" text="[ Code ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="simulatorViewTrigger" text="[ Simulator ]" styleClass="view-trigger-btn"/>
+    </HBox>
+
+    <!-- Dynamic Content Stack Pane -->
+    <StackPane fx:id="contentCardStack" VBox.vgrow="ALWAYS" styleClass="card-panel">
+        <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+
+        <!-- 1. [Algorithm] View (Figure 4) -->
+        <VBox fx:id="algorithmPane" spacing="10" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Algorithm Documentation (GitHub REST API Engine)" styleClass="section-title"/>
+                <ProgressIndicator fx:id="algoLoadingSpinner" prefWidth="18" prefHeight="18" visible="false"/>
+            </HBox>
+            <TextArea fx:id="algorithmMarkdownArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS" 
+                      styleClass="markdown-view"/>
+        </VBox>
+
+        <!-- 2. [Code] View (Figure 4) -->
+        <VBox fx:id="codePane" spacing="10" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Java Source Implementation (GitHub REST API Engine)" styleClass="section-title"/>
+                <ProgressIndicator fx:id="codeLoadingSpinner" prefWidth="18" prefHeight="18" visible="false"/>
+            </HBox>
+            <TextArea fx:id="codeEditorArea" editable="false" wrapText="false" VBox.vgrow="ALWAYS" 
+                      styleClass="code-view"/>
+        </VBox>
+
+        <!-- 3. [Simulator] View & Video Fallback Logic (Figure 3 & 4) -->
+        <VBox fx:id="simulatorPane" spacing="12" alignment="CENTER" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            
+            <!-- Video Found: Render MediaView with full playback controls -->
+            <VBox fx:id="mediaViewContainer" spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+                <StackPane styleClass="video-viewport" VBox.vgrow="ALWAYS">
+                    <MediaView fx:id="simulationMediaView" fitWidth="760" fitHeight="420" preserveRatio="true"/>
+                </StackPane>
+
+                <!-- Full Playback Controls Bar -->
+                <HBox spacing="10" alignment="CENTER" styleClass="media-controls-bar">
+                    <padding><Insets top="8" right="14" bottom="8" left="14"/></padding>
+                    <Button fx:id="videoPlayBtn" text="▶ Play" styleClass="media-btn"/>
+                    <Button fx:id="videoPauseBtn" text="⏸ Pause" styleClass="media-btn"/>
+                    
+                    <Label text="Progress:" styleClass="subtle-label"/>
+                    <Slider fx:id="videoProgressSlider" HBox.hgrow="ALWAYS" min="0" max="100" value="0"/>
+                    <Label fx:id="videoTimeLabel" text="00:00 / 00:00" styleClass="time-label"/>
+
+                    <Separator orientation="VERTICAL"/>
+
+                    <Label text="🔊 Vol:" styleClass="subtle-label"/>
+                    <Slider fx:id="videoVolumeSlider" prefWidth="90" min="0" max="100" value="80"/>
+                </HBox>
+            </VBox>
+
+            <!-- Video Not Found Fallback (e.g., Floyd-Warshall, Johnson's) -->
+            <VBox fx:id="fallbackBox" spacing="12" alignment="CENTER" styleClass="fallback-panel" 
+                  visible="false" managed="false" VBox.vgrow="ALWAYS">
+                <Label text="⚠️" styleClass="warning-icon"/>
+                <Label fx:id="videoUnavailableLabel" text="Simulation video not available" styleClass="fallback-title"/>
+                <Label fx:id="fallbackDetailLabel" text="" wrapText="true" textAlignment="CENTER" styleClass="fallback-msg"/>
+            </VBox>
+
+        </VBox>
+
+    </StackPane>
+</VBox>
