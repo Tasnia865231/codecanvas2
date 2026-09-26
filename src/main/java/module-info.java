@@ -17,4 +17,5 @@ module com.codecanvas {
     exports com.codecanvas.api;
     exports com.codecanvas.navigation;
     exports com.codecanvas.util;
+    exports com.codecanvas.visualizer;
 }

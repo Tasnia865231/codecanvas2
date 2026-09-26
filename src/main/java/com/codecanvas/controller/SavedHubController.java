@@ -5,6 +5,7 @@ import com.codecanvas.model.AlgorithmItem;
 import com.codecanvas.model.SavedItem;
 import com.codecanvas.model.User;
 import com.codecanvas.navigation.NavigationManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -157,11 +158,15 @@ public class SavedHubController implements Initializable {
         SavedItem item = savedTable.getSelectionModel().getSelectedItem();
         if (item == null) return;
 
-        dbHelper.deleteSavedItem(item.getId());
-        itemsData.remove(item);
-        statusSummaryLabel.setText("Deleted bookmark: " + item.getTitle());
-        if (itemsData.isEmpty()) {
-            clearDetail();
-        }
+        com.codecanvas.util.AppExecutor.execute(() -> {
+            dbHelper.deleteSavedItem(item.getId());
+            Platform.runLater(() -> {
+                itemsData.remove(item);
+                statusSummaryLabel.setText("Deleted bookmark: " + item.getTitle());
+                if (itemsData.isEmpty()) {
+                    clearDetail();
+                }
+            });
+        });
     }
 }

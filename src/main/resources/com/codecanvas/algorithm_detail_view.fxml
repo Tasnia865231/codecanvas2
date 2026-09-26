@@ -9,9 +9,9 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.codecanvas.controller.AlgorithmDetailController"
       styleClass="detail-container">
-    <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
 
-    <!-- Top Metadata Bar: Title, Tags, Actions (Figure 3 & 4) -->
+    <!-- Top Metadata Bar: Title, Tags, Actions (Figures 3 & 4) -->
     <HBox spacing="16" alignment="CENTER_LEFT" styleClass="card-panel">
         <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
 
@@ -27,18 +27,19 @@
             </HBox>
         </VBox>
 
-        <!-- Figure 4 Actions: Copy Code & Save Icon Buttons -->
+        <!-- Actions: Copy Code & Save Icon Buttons -->
         <HBox spacing="10" alignment="CENTER_RIGHT">
             <Button fx:id="copyCodeBtn" text="📋 Copy Code" styleClass="secondary-btn" visible="false" managed="false"/>
             <Button fx:id="saveBookmarkBtn" text="☆ Save" styleClass="primary-btn"/>
         </HBox>
     </HBox>
 
-    <!-- Navigation Bar: Three Core View Triggers -> [Algorithm], [Code], [Simulator] -->
+    <!-- Navigation Bar: Core View Triggers -> [Algorithm], [Code], [Simulator], [MCQ Quiz] -->
     <HBox spacing="6" alignment="CENTER_LEFT" styleClass="trigger-bar">
         <ToggleButton fx:id="algoViewTrigger" text="[ Algorithm ]" styleClass="view-trigger-btn"/>
         <ToggleButton fx:id="codeViewTrigger" text="[ Code ]" styleClass="view-trigger-btn"/>
         <ToggleButton fx:id="simulatorViewTrigger" text="[ Simulator ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="mcqViewTrigger" text="[ MCQ Quiz ]" styleClass="view-trigger-btn"/>
     </HBox>
 
     <!-- Dynamic Content Stack Pane -->
@@ -65,7 +66,7 @@
                       styleClass="code-view"/>
         </VBox>
 
-        <!-- 3. [Simulator] View & Video Fallback Logic (Figure 3 & 4) -->
+        <!-- 3. [Simulator] View & Upgraded Media Controls (Figure 3 & 4) -->
         <VBox fx:id="simulatorPane" spacing="12" alignment="CENTER" VBox.vgrow="ALWAYS" visible="false" managed="false">
             
             <!-- Video Found: Render MediaView with full playback controls -->
@@ -74,12 +75,16 @@
                     <MediaView fx:id="simulationMediaView" fitWidth="760" fitHeight="420" preserveRatio="true"/>
                 </StackPane>
 
-                <!-- Full Playback Controls Bar -->
+                <!-- Full Playback Controls Bar with Dynamic Play/Pause State Icon & Speed Selector -->
                 <HBox spacing="10" alignment="CENTER" styleClass="media-controls-bar">
-                    <padding><Insets top="8" right="14" bottom="8" left="14"/></padding>
-                    <Button fx:id="videoPlayBtn" text="▶ Play" styleClass="media-btn"/>
-                    <Button fx:id="videoPauseBtn" text="⏸ Pause" styleClass="media-btn"/>
+                    <!-- Dynamic Play/Pause State Icon -->
+                    <Button fx:id="videoPlayPauseBtn" text="▶ Play" styleClass="media-btn"/>
                     
+                    <Label text="Speed:" styleClass="subtle-label"/>
+                    <ComboBox fx:id="videoSpeedComboBox" prefWidth="85" styleClass="media-speed-box"/>
+
+                    <Separator orientation="VERTICAL"/>
+
                     <Label text="Progress:" styleClass="subtle-label"/>
                     <Slider fx:id="videoProgressSlider" HBox.hgrow="ALWAYS" min="0" max="100" value="0"/>
                     <Label fx:id="videoTimeLabel" text="00:00 / 00:00" styleClass="time-label"/>
@@ -91,14 +96,48 @@
                 </HBox>
             </VBox>
 
-            <!-- Video Not Found Fallback (e.g., Floyd-Warshall, Johnson's) -->
+            <!-- Video Not Found Fallback (Exact requirement label: "Simulation video not available") -->
             <VBox fx:id="fallbackBox" spacing="12" alignment="CENTER" styleClass="fallback-panel" 
                   visible="false" managed="false" VBox.vgrow="ALWAYS">
                 <Label text="⚠️" styleClass="warning-icon"/>
                 <Label fx:id="videoUnavailableLabel" text="Simulation video not available" styleClass="fallback-title"/>
                 <Label fx:id="fallbackDetailLabel" text="" wrapText="true" textAlignment="CENTER" styleClass="fallback-msg"/>
             </VBox>
+        </VBox>
 
+        <!-- 4. [MCQ Quiz] View: 20 Questions, Radio Choices, Prominent Verdict Card, Explanations -->
+        <VBox fx:id="mcqPane" spacing="12" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <!-- Header bar with Quiz actions and Score Status -->
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="sub-card">
+                <Label fx:id="mcqTopicTitleLabel" text="20-Question MCQ Assessment" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="mcqScoreBadge" text="Session: 0/20 | Total MCQs: 0 | Rank: Beginner" styleClass="status-pill"/>
+                <Button fx:id="submitQuizTopBtn" text="✔ Submit Quiz" styleClass="primary-btn"/>
+                <Button fx:id="retakeQuizBtn" text="↺ Reset / Retake" styleClass="secondary-btn" visible="false" managed="false"/>
+            </HBox>
+
+            <!-- PROMINENT SCORE VERDICT CARD (Displayed directly above questions upon Submit Quiz) -->
+            <VBox fx:id="scoreVerdictCard" spacing="6" styleClass="score-verdict-card" visible="false" managed="false">
+                <Label fx:id="scoreVerdictTitle" text="Quiz Results: 18 / 20 Correct (90%) - Level Progress Updated!" 
+                       styleClass="score-verdict-title"/>
+                <Label fx:id="scoreVerdictSubtitle" text="Performance summary and level promotion details..." 
+                       styleClass="score-verdict-subtitle"/>
+            </VBox>
+
+            <!-- Scrollable 20-Question List with RadioButton groups & Green/Red Feedback Containers -->
+            <ScrollPane fx:id="mcqScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane-clean">
+                <VBox fx:id="mcqQuestionsContainer" spacing="14">
+                    <padding><Insets top="4" right="10" bottom="16" left="4"/></padding>
+                    <!-- Questions will be dynamically populated here -->
+                </VBox>
+            </ScrollPane>
+
+            <!-- Bottom Submit Button -->
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Label text="Answer all 20 questions and click Submit Quiz to evaluate your mastery." styleClass="subtle-label"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="submitQuizBottomBtn" text="✔ Submit Quiz" styleClass="primary-btn"/>
+            </HBox>
         </VBox>
 
     </StackPane>

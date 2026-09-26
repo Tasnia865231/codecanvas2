@@ -2,7 +2,9 @@ package com.codecanvas.controller;
 
 import com.codecanvas.model.AlgorithmItem;
 import com.codecanvas.navigation.NavigationManager;
-import javafx.beans.property.SimpleStringProperty;
+import com.codecanvas.visualizer.AlgorithmVisualizer;
+import com.codecanvas.visualizer.GraphAlgorithmVisualizer;
+import com.codecanvas.visualizer.SortingAlgorithmVisualizer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,14 +16,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * Controller for Figure 2: Main Algorithm Dashboard & Search.
  * Features real-time case-insensitive search, category TreeView navigation,
- * an itemized TableView of CS algorithms, and smooth transition to Detail Hub (Figure 3).
+ * algorithm TableView catalog, and integration of the polymorphic AlgorithmVisualizer engines.
  */
 public class DashboardController implements Initializable {
 
@@ -39,7 +39,7 @@ public class DashboardController implements Initializable {
     @FXML private TableColumn<AlgorithmItem, String> descCol;
     @FXML private Label resultCountLabel;
     @FXML private Button openDetailBtn;
-    @FXML private Button profileShortcutBtn;
+    @FXML private Button quickSimulationBtn;
 
     private final ObservableList<AlgorithmItem> masterData = FXCollections.observableArrayList();
     private FilteredList<AlgorithmItem> filteredData;
@@ -79,7 +79,11 @@ public class DashboardController implements Initializable {
         });
 
         algorithmTable.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
-            openDetailBtn.setDisable(newV == null);
+            boolean hasSelection = (newV != null);
+            openDetailBtn.setDisable(!hasSelection);
+            if (quickSimulationBtn != null) {
+                quickSimulationBtn.setDisable(!hasSelection);
+            }
         });
 
         // Clear search
@@ -94,12 +98,20 @@ public class DashboardController implements Initializable {
         });
 
         updateCountLabel();
+
+        // Connect global search from main unified header
+        navManager.setGlobalSearchListener(query -> {
+            if (searchField != null) {
+                searchField.setText(query);
+                applyCombinedFilter();
+            }
+        });
     }
 
     private void initAlgorithmsData() {
         masterData.setAll(
             new AlgorithmItem("1", "BFS", "Graph", "O(V + E)", "O(V)", 
-                "Breadth-First Search traverses tree/graph level by level using a queue.",
+                "Breadth-First Search traverses graph level by level using a queue.",
                 "TheAlgorithms", "Java", "src/main/resources/algorithms/graphs/bfs.md", "src/main/java/com/thealgorithms/searches/BreadthFirstSearch.java", "BFS.mp4"),
             new AlgorithmItem("2", "DFS", "Graph", "O(V + E)", "O(V)", 
                 "Depth-First Search traverses graph branches deeply before backtracking.",
@@ -116,13 +128,19 @@ public class DashboardController implements Initializable {
             new AlgorithmItem("6", "Johnson's", "Graph", "O(V^2 log V + VE)", "O(V^2)", 
                 "All-pairs shortest paths algorithm optimized for sparse graphs via reweighting.",
                 "TheAlgorithms", "Java", "src/main/resources/algorithms/graphs/johnsons.md", "src/main/java/com/thealgorithms/datastructures/graphs/JohnsonsAlgorithm.java", "Johnson.mp4"),
-            new AlgorithmItem("7", "Quick Sort", "Sorting", "O(N log N)", "O(log N)", 
+            new AlgorithmItem("7", "Kruskal's", "Graph", "O(E log E)", "O(V + E)", 
+                "Minimum Spanning Tree algorithm using edge sorting and Disjoint Set Union (DSU).",
+                "TheAlgorithms", "Java", "src/main/resources/algorithms/graphs/kruskals.md", "src/main/java/com/thealgorithms/datastructures/graphs/Kruskals.java", "Kruskal.mp4"),
+            new AlgorithmItem("8", "Prim's", "Graph", "O((V + E) log V)", "O(V)", 
+                "Minimum Spanning Tree algorithm growing a single tree using a priority queue.",
+                "TheAlgorithms", "Java", "src/main/resources/algorithms/graphs/prims.md", "src/main/java/com/thealgorithms/datastructures/graphs/PrimsAlgorithm.java", "Prims.mp4"),
+            new AlgorithmItem("9", "Quick Sort", "Sorting", "O(N log N)", "O(log N)", 
                 "Divide-and-conquer sorting algorithm using in-place partitioning.",
                 "TheAlgorithms", "Java", "src/main/resources/algorithms/sorts/quick_sort.md", "src/main/java/com/thealgorithms/sorts/QuickSort.java", "QuickSort.mp4"),
-            new AlgorithmItem("8", "Merge Sort", "Sorting", "O(N log N)", "O(N)", 
+            new AlgorithmItem("10", "Merge Sort", "Sorting", "O(N log N)", "O(N)", 
                 "Stable divide-and-conquer sorting algorithm with predictable complexity.",
                 "TheAlgorithms", "Java", "src/main/resources/algorithms/sorts/merge_sort.md", "src/main/java/com/thealgorithms/sorts/MergeSort.java", "MergeSort.mp4"),
-            new AlgorithmItem("9", "Binary Search", "Searching", "O(log N)", "O(1)", 
+            new AlgorithmItem("11", "Binary Search", "Searching", "O(log N)", "O(1)", 
                 "Efficient interval halving search on sorted arrays.",
                 "TheAlgorithms", "Java", "src/main/resources/algorithms/searches/binary_search.md", "src/main/java/com/thealgorithms/searches/BinarySearch.java", "BinarySearch.mp4")
         );
@@ -135,7 +153,8 @@ public class DashboardController implements Initializable {
         TreeItem<String> graph = new TreeItem<>("Graph");
         graph.getChildren().addAll(new TreeItem<>("BFS"), new TreeItem<>("DFS"), 
                                    new TreeItem<>("Dijkstra"), new TreeItem<>("Bellman-Ford"), 
-                                   new TreeItem<>("Johnson's"));
+                                   new TreeItem<>("Johnson's"), new TreeItem<>("Kruskal's"),
+                                   new TreeItem<>("Prim's"));
         graph.setExpanded(true);
 
         TreeItem<String> dp = new TreeItem<>("Dynamic Programming");
@@ -157,7 +176,6 @@ public class DashboardController implements Initializable {
             if (newV != null) {
                 String val = newV.getValue();
                 if (newV.isLeaf() && newV.getParent() != null && newV.getParent() != root) {
-                    // Specific algorithm clicked in tree
                     searchField.setText(val);
                 } else if (val.equals("All Categories")) {
                     selectedCategory = "ALL";
@@ -176,10 +194,7 @@ public class DashboardController implements Initializable {
         String filter = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase();
 
         filteredData.setPredicate(item -> {
-            // Category check
             boolean matchesCat = selectedCategory.equals("ALL") || item.getCategory().equalsIgnoreCase(selectedCategory);
-
-            // Search query check (case-insensitive across name, category, and description)
             boolean matchesQuery = filter.isEmpty() ||
                     item.getName().toLowerCase().contains(filter) ||
                     item.getCategory().toLowerCase().contains(filter) ||
@@ -203,12 +218,35 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void openAlgorithmDetail(AlgorithmItem item) {
-        navManager.navigateTo(NavigationManager.Screen.DETAIL, item);
+    @FXML
+    private void onQuickSimulation(ActionEvent event) {
+        AlgorithmItem selected = algorithmTable.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        AlgorithmVisualizer visualizer;
+        if (selected.getCategory().equalsIgnoreCase("Sorting")) {
+            visualizer = new SortingAlgorithmVisualizer(selected.getName(), null);
+        } else {
+            visualizer = new GraphAlgorithmVisualizer(selected.getName(), 6, 0);
+        }
+
+        visualizer.runSimulation();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Simulation Engine Trace");
+        alert.setHeaderText(visualizer.getExecutionSummary());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Math.min(10, visualizer.getLogTrace().size()); i++) {
+            sb.append(visualizer.getLogTrace().get(i)).append("\n");
+        }
+        if (visualizer.getLogTrace().size() > 10) {
+            sb.append("... and ").append(visualizer.getLogTrace().size() - 10).append(" more steps.");
+        }
+        alert.setContentText(sb.toString());
+        alert.showAndWait();
     }
 
-    @FXML
-    private void onProfileShortcutClicked(ActionEvent event) {
-        navManager.navigateTo(NavigationManager.Screen.PROFILE);
+    private void openAlgorithmDetail(AlgorithmItem item) {
+        navManager.navigateTo(NavigationManager.Screen.DETAIL, item);
     }
 }
