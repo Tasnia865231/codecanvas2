@@ -9,6 +9,7 @@ module com.codecanvas {
     opens com.codecanvas to javafx.fxml;
     opens com.codecanvas.controller to javafx.fxml;
     opens com.codecanvas.model to javafx.base;
+    opens com.codecanvas.visualizer.interactive to javafx.fxml;
 
     exports com.codecanvas;
     exports com.codecanvas.model;
@@ -17,4 +18,6 @@ module com.codecanvas {
     exports com.codecanvas.api;
     exports com.codecanvas.navigation;
     exports com.codecanvas.util;
+    exports com.codecanvas.visualizer;
+    exports com.codecanvas.visualizer.interactive;
 }

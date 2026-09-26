@@ -6,18 +6,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21"
+<ScrollPane fx:id="profileScrollRoot" fitToWidth="true" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.codecanvas.controller.ProfileController"
             styleClass="scroll-pane-clean">
     <VBox spacing="16" styleClass="profile-container">
-        <padding><Insets top="16" right="20" bottom="20" left="20"/></padding>
+        <padding><Insets top="14" right="18" bottom="20" left="18"/></padding>
+
+        <!-- Role-Based Access Control Mode Banner -->
+        <Label fx:id="rbacModeBanner" text="Role Mode Status" styleClass="rbac-banner" maxWidth="Infinity"/>
 
         <!-- Figure 5: User Profile Header Card -->
-        <HBox spacing="20" alignment="CENTER_LEFT" styleClass="card-panel">
+        <HBox spacing="18" alignment="CENTER_LEFT" styleClass="card-panel">
             <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
 
-            <!-- Avatar & FileChooser Controls -->
+            <!-- Avatar & FileChooser Controls (Dynamic window width bound scaling) -->
             <VBox spacing="8" alignment="CENTER">
                 <ImageView fx:id="profileImageView" fitWidth="110" fitHeight="110" preserveRatio="true" 
                            styleClass="avatar-image-view"/>
@@ -29,29 +32,38 @@
 
             <!-- User Information Display -->
             <VBox spacing="6" HBox.hgrow="ALWAYS">
-                <Label fx:id="usernameDisplayLabel" text="Student Profile" styleClass="detail-title"/>
-                <Label fx:id="emailDisplayLabel" text="student@university.edu" styleClass="subtle-label"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="usernameDisplayLabel" text="Student Name" styleClass="detail-title"/>
+                    <Label fx:id="userRoleBadgeLabel" text="STUDENT" styleClass="badge-pill"/>
+                    <Label fx:id="userRankBadgeLabel" text="Rank: Beginner" styleClass="status-pill"/>
+                </HBox>
+                <Label fx:id="userScoreSummaryLabel" text="Correct MCQs: 0 | Total Score: 0 pts" styleClass="subtle-label"/>
                 <Label fx:id="profileSaveStatusLabel" text="" styleClass="feedback-label"/>
             </VBox>
 
-            <!-- Navigation to Figure 6 Saved Hub & Save Profile -->
+            <!-- Navigation to Saved Hub & Save Profile -->
             <VBox spacing="8" alignment="CENTER_RIGHT">
                 <Button fx:id="openSavedHubBtn" text="★ Saved Bookmarks Hub →" styleClass="accent-btn"/>
-                <Button fx:id="saveProfileChangesBtn" text="Save Profile" styleClass="primary-btn" 
+                <Button fx:id="saveProfileChangesBtn" text="Save Profile Changes" styleClass="primary-btn" 
                         onAction="#onSaveProfileChanges"/>
             </VBox>
         </HBox>
 
-        <!-- Integrated Course UI Components Matrix -->
+        <!-- Navigation Tabs: Student Database (RBAC), Peer Directory (Inspection), & Course Lab -->
         <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="course-tab-pane">
             
-            <!-- TAB 1: TableView & Person CRUD (SQLite) -->
-            <Tab text="Student Database (TableView &amp; Person CRUD)">
+            <!-- TAB 1: Student Database (RBAC Admin Mode vs. Student Mode) -->
+            <Tab text="Student Database (TableView &amp; RBAC)">
                 <VBox spacing="12" styleClass="tab-inner-box">
                     <padding><Insets top="14" right="16" bottom="16" left="16"/></padding>
 
-                    <Label text="Course Students (SQLite-backed TableView)" styleClass="section-title"/>
-                    <TableView fx:id="personTable" prefHeight="180" styleClass="modern-table">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Course Students (SQLite-backed PersonDao)" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="studentModeNoticeLabel" text="" styleClass="warning-pill" visible="false" managed="false"/>
+                    </HBox>
+
+                    <TableView fx:id="personTable" prefHeight="190" styleClass="modern-table">
                         <columns>
                             <TableColumn fx:id="idColumn" text="Student ID" prefWidth="90"/>
                             <TableColumn fx:id="nameColumn" text="Student Name" prefWidth="220"/>
@@ -63,11 +75,11 @@
                         </columnResizePolicy>
                     </TableView>
 
-                    <!-- Person Form Controls -->
-                    <HBox spacing="10" alignment="CENTER_LEFT">
-                        <TextField fx:id="personNameField" promptText="Name" prefWidth="180" styleClass="form-input"/>
+                    <!-- Admin Form: Only Visible & Managed for Admin123_ -->
+                    <HBox fx:id="adminPersonFormBox" spacing="10" alignment="CENTER_LEFT" styleClass="admin-form-panel">
+                        <TextField fx:id="personNameField" promptText="Student Full Name" prefWidth="190" styleClass="form-input"/>
                         <ChoiceBox fx:id="personLevelChoiceBox" prefWidth="130"/>
-                        <DatePicker fx:id="personDobPicker" promptText="Date of Birth" prefWidth="150"/>
+                        <DatePicker fx:id="personDobPicker" promptText="Date of Birth" prefWidth="140"/>
                         <Button fx:id="addPersonBtn" text="Add Student" styleClass="primary-btn" onAction="#onAddPerson"/>
                         <Button fx:id="updatePersonBtn" text="Update" styleClass="secondary-btn" onAction="#onUpdatePerson"/>
                         <Button fx:id="deletePersonBtn" text="Delete" styleClass="danger-btn" onAction="#onDeletePerson"/>
@@ -75,7 +87,65 @@
                 </VBox>
             </Tab>
 
-            <!-- TAB 2: Interactive Controls & Form Widgets Matrix -->
+            <!-- TAB 2: Class Peer Directory (Student Inspection of Peer Progress) -->
+            <Tab text="Class Peer Directory (Student Inspection)">
+                <SplitPane dividerPositions="0.35" styleClass="tab-inner-box">
+                    <!-- Left: Peers list -->
+                    <VBox spacing="8" styleClass="sidebar-panel">
+                        <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                        <Label text="Registered Peers" styleClass="section-title"/>
+                        <ListView fx:id="peerListView" VBox.vgrow="ALWAYS" styleClass="peer-list-view"/>
+                    </VBox>
+
+                    <!-- Right: Read-Only Peer Progress Card -->
+                    <VBox spacing="14" styleClass="table-panel">
+                        <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label fx:id="peerNameLabel" text="Select a peer" styleClass="detail-title"/>
+                            <Label fx:id="peerRoleBadge" text="STUDENT" styleClass="badge-pill"/>
+                            <Label fx:id="peerRankBadge" text="Rank: Beginner" styleClass="status-pill"/>
+                        </HBox>
+
+                        <GridPane hgap="16" vgap="12" styleClass="peer-stats-grid">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="50"/>
+                            </columnConstraints>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="Total Correct MCQs:" styleClass="subtle-label"/>
+                                <Label fx:id="peerMcqScoreLabel" text="0 correct (0 pts)" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="Saved Algorithm Bookmarks:" styleClass="subtle-label"/>
+                                <Label fx:id="peerSavedCountLabel" text="0 saved item(s)" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label text="University Email:" styleClass="subtle-label"/>
+                                <Label fx:id="peerEmailLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label text="Country / Region:" styleClass="subtle-label"/>
+                                <Label fx:id="peerCountryLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                <Label text="Hobbies &amp; Interests:" styleClass="subtle-label"/>
+                                <Label fx:id="peerHobbiesLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+                        </GridPane>
+
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Label text="ℹ️ Read-Only Inspection: Students cannot modify peer accounts or scores." styleClass="subtle-label"/>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+
+            <!-- TAB 3: Interactive UI Controls Lab (Course UI Components Matrix) -->
             <Tab text="Integrated UI Controls Lab">
                 <GridPane hgap="16" vgap="16" styleClass="tab-inner-box">
                     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>

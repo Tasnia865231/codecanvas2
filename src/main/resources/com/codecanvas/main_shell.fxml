@@ -8,26 +8,34 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.codecanvas.controller.MainShellController"
             stylesheets="@style.css"
-            prefWidth="1100" prefHeight="750">
+            prefWidth="1140" prefHeight="780">
 
+    <!-- SINGLE UNIFIED HEADER BAR: Logo, Search Bar, Theme Selector, ONE Profile Chip -->
     <top>
         <VBox styleClass="header-bar">
-            <HBox spacing="14" alignment="CENTER_LEFT" styleClass="nav-header">
-                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+            <HBox fx:id="navHeaderHBox" spacing="12" alignment="CENTER_LEFT" styleClass="nav-header">
+                <padding><Insets top="8" right="16" bottom="8" left="16"/></padding>
                 
                 <Button fx:id="backButton" text="← Back" styleClass="back-btn" visible="false" managed="false"/>
                 
-                <Label text="CodeCanvas" styleClass="brand-logo"/>
+                <Label fx:id="brandLabel" text="CodeCanvas" styleClass="brand-logo"/>
                 <Label text="|" styleClass="separator-label"/>
-                <Label fx:id="screenTitleLabel" text="Algorithm Visualizer" styleClass="header-title"/>
+                <Label fx:id="screenTitleLabel" text="Algorithm Dashboard" styleClass="header-title"/>
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
-                <HBox spacing="8" alignment="CENTER_RIGHT">
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <!-- Unified Search Bar in Header Bar -->
+                    <TextField fx:id="headerSearchField" promptText="🔍 Search algorithms..." prefWidth="200" 
+                               styleClass="header-search-field" visible="false" managed="false"/>
+
                     <Label text="Theme:" styleClass="subtle-label"/>
-                    <ChoiceBox fx:id="globalThemeChoiceBox" prefWidth="95"/>
-                    <Button fx:id="profileHeaderButton" text="👤 Profile" styleClass="profile-header-btn" 
+                    <ChoiceBox fx:id="globalThemeChoiceBox" prefWidth="115" styleClass="modern-choice-box"/>
+                    
+                    <!-- CONSOLIDATED SINGLE PROFILE CHIP (No duplicate buttons) -->
+                    <Button fx:id="userProfileChip" text="👤 Profile" styleClass="profile-chip-btn" 
                             onAction="#onProfileClicked" visible="false" managed="false"/>
+                    
                     <Button fx:id="logoutButton" text="Logout" styleClass="logout-btn" 
                             onAction="#onLogoutClicked" visible="false" managed="false"/>
                 </HBox>

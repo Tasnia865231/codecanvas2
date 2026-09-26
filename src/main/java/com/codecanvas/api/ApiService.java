@@ -375,5 +375,154 @@ public class ApiService {
                 }
             }
             """);
+
+        // Kruskal's MST Doc & Code
+        localDocCache.put("Kruskal's", """
+            # Kruskal's Minimum Spanning Tree Algorithm
+            
+            Kruskal's algorithm is a greedy algorithm that finds a Minimum Spanning Tree (MST) for a connected weighted undirected graph.
+            
+            ### Core Characteristics
+            - **Design Paradigm:** Greedy Paradigm
+            - **Primary Data Structure:** Disjoint Set Union (DSU / Union-Find)
+            - **Time Complexity:** O(E log E) or O(E log V)
+            - **Space Complexity:** O(V + E)
+            
+            ### Algorithm Steps
+            1. Sort all edges in non-decreasing order of their weight.
+            2. Initialize a Disjoint Set for every vertex.
+            3. For each sorted edge (u, v) with weight w:
+               - If find(u) != find(v):
+                 - Union sets of u and v.
+                 - Add edge (u, v) to the MST.
+                 - If MST contains V - 1 edges, terminate early.
+            """);
+
+        localCodeCache.put("Kruskal's", """
+            import java.util.*;
+
+            public class Kruskals {
+                static class Edge implements Comparable<Edge> {
+                    int src, dest, weight;
+                    public int compareTo(Edge compareEdge) {
+                        return this.weight - compareEdge.weight;
+                    }
+                }
+
+                static class Subset {
+                    int parent, rank;
+                }
+
+                int V, E;
+                Edge[] edges;
+
+                int find(Subset[] subsets, int i) {
+                    if (subsets[i].parent != i)
+                        subsets[i].parent = find(subsets, subsets[i].parent);
+                    return subsets[i].parent;
+                }
+
+                void union(Subset[] subsets, int x, int y) {
+                    int xroot = find(subsets, x);
+                    int yroot = find(subsets, y);
+
+                    if (subsets[xroot].rank < subsets[yroot].rank)
+                        subsets[xroot].parent = yroot;
+                    else if (subsets[xroot].rank > subsets[yroot].rank)
+                        subsets[yroot].parent = xroot;
+                    else {
+                        subsets[yroot].parent = xroot;
+                        subsets[xroot].rank++;
+                    }
+                }
+
+                public List<Edge> kruskalMST() {
+                    List<Edge> result = new ArrayList<>();
+                    Arrays.sort(edges);
+
+                    Subset[] subsets = new Subset[V];
+                    for (int i = 0; i < V; ++i) {
+                        subsets[i] = new Subset();
+                        subsets[i].parent = i;
+                        subsets[i].rank = 0;
+                    }
+
+                    int i = 0;
+                    while (result.size() < V - 1 && i < E) {
+                        Edge nextEdge = edges[i++];
+                        int x = find(subsets, nextEdge.src);
+                        int y = find(subsets, nextEdge.dest);
+
+                        if (x != y) {
+                            result.add(nextEdge);
+                            union(subsets, x, y);
+                        }
+                    }
+                    return result;
+                }
+            }
+            """);
+
+        // Prim's MST Doc & Code
+        localDocCache.put("Prim's", """
+            # Prim's Minimum Spanning Tree Algorithm
+            
+            Prim's algorithm finds a Minimum Spanning Tree for a weighted undirected graph by growing a single tree from an arbitrary starting vertex.
+            
+            ### Core Characteristics
+            - **Design Paradigm:** Greedy Paradigm
+            - **Primary Data Structure:** Min-Priority Queue (Binary Heap)
+            - **Time Complexity:** O((V + E) log V) with Binary Heap, O(E + V log V) with Fibonacci Heap
+            - **Space Complexity:** O(V)
+            
+            ### Algorithm Steps
+            1. Maintain an `inMST[]` set and a min-priority queue of cut edges.
+            2. Assign key[v] = Infinity for all vertices, key[start] = 0.
+            3. While the priority queue is not empty:
+               - Extract vertex `u` with minimum key.
+               - Include `u` in `inMST[]`.
+               - For each adjacent vertex `v` of `u`:
+                 - If `v` not in `inMST` and weight(u, v) < key[v]:
+                   - Update key[v] = weight(u, v) and parent[v] = u.
+            """);
+
+        localCodeCache.put("Prim's", """
+            import java.util.*;
+
+            public class PrimsAlgorithm {
+                static class Edge {
+                    int dest, weight;
+                    Edge(int dest, int weight) {
+                        this.dest = dest;
+                        this.weight = weight;
+                    }
+                }
+
+                public static int primMST(int V, List<List<Edge>> adj) {
+                    boolean[] inMST = new boolean[V];
+                    PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+
+                    pq.offer(new int[]{0, 0}); // {vertex, weight}
+                    int totalWeight = 0;
+
+                    while (!pq.isEmpty()) {
+                        int[] curr = pq.poll();
+                        int u = curr[0];
+                        int w = curr[1];
+
+                        if (inMST[u]) continue;
+                        inMST[u] = true;
+                        totalWeight += w;
+
+                        for (Edge edge : adj.get(u)) {
+                            if (!inMST[edge.dest]) {
+                                pq.offer(new int[]{edge.dest, edge.weight});
+                            }
+                        }
+                    }
+                    return totalWeight;
+                }
+            }
+            """);
     }
 }

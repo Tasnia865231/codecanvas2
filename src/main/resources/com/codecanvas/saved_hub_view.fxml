@@ -10,7 +10,7 @@
       styleClass="saved-hub-container">
     <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
 
-    <!-- Top Filter Header: Filter Tabs [Algorithm], [Code], [Simulator] (Figure 6) -->
+    <!-- Top Filter Header: Filter Tabs [All], [Algorithm], [Code], [Videos], [Simulation] (Figure 6) -->
     <HBox spacing="12" alignment="CENTER_LEFT" styleClass="card-panel">
         <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
 
@@ -19,7 +19,8 @@
             <ToggleButton fx:id="allFilterBtn" text="[ All ]" styleClass="filter-tab-btn"/>
             <ToggleButton fx:id="algoFilterBtn" text="[ Algorithm ]" styleClass="filter-tab-btn"/>
             <ToggleButton fx:id="codeFilterBtn" text="[ Code ]" styleClass="filter-tab-btn"/>
-            <ToggleButton fx:id="simFilterBtn" text="[ Simulator ]" styleClass="filter-tab-btn"/>
+            <ToggleButton fx:id="videosFilterBtn" text="[ Videos ]" styleClass="filter-tab-btn"/>
+            <ToggleButton fx:id="simulationFilterBtn" text="[ Simulation ]" styleClass="filter-tab-btn"/>
         </HBox>
 
         <Region HBox.hgrow="ALWAYS"/>

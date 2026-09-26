@@ -27,7 +27,8 @@ public class NavigationManager {
         AUTH("/com/codecanvas/auth_view.fxml", "Authentication"),
         DASHBOARD("/com/codecanvas/dashboard_view.fxml", "Algorithm Dashboard"),
         DETAIL("/com/codecanvas/algorithm_detail_view.fxml", "Algorithm Detail Hub"),
-        PROFILE("/com/codecanvas/profile_view.fxml", "User Profile & Components"),
+        ALGORITHM_DETAIL("/com/codecanvas/algorithm_detail_view.fxml", "Algorithm Detail Hub"),
+        PROFILE("/com/codecanvas/profile_view.fxml", "Profile & Student Directory"),
         SAVED_HUB("/com/codecanvas/saved_hub_view.fxml", "Saved Bookmarks Hub");
 
         private final String fxmlPath;
@@ -72,6 +73,7 @@ public class NavigationManager {
     private Consumer<Boolean> backButtonStateListener;
     private Consumer<String> screenTitleListener;
     private Consumer<User> userStateListener;
+    private Consumer<String> globalSearchListener;
 
     private NavigationManager() {
     }
@@ -88,15 +90,31 @@ public class NavigationManager {
     }
 
     public Stage getPrimaryStage() { return primaryStage; }
+    public Scene getPrimaryScene() { return primaryScene; }
     public User getCurrentUser() { return currentUser; }
+    public NavigationEntry getCurrentEntry() { return currentEntry; }
+
+    public void setGlobalSearchListener(Consumer<String> listener) {
+        this.globalSearchListener = listener;
+    }
+
+    public void triggerGlobalSearch(String query) {
+        if (globalSearchListener != null) {
+            globalSearchListener.accept(query);
+        }
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
         if (user != null && user.getTheme() != null) {
             applyTheme(user.getTheme());
         }
+        notifyUserUpdated();
+    }
+
+    public void notifyUserUpdated() {
         if (userStateListener != null) {
-            userStateListener.accept(user);
+            Platform.runLater(() -> userStateListener.accept(currentUser));
         }
     }
 
@@ -191,12 +209,16 @@ public class NavigationManager {
         }
         if (primaryScene != null && primaryScene.getRoot() != null) {
             Node root = primaryScene.getRoot();
-            root.getStyleClass().removeAll("theme-red", "theme-green", "theme-blue");
-            switch (theme) {
-                case "Red" -> root.getStyleClass().add("theme-red");
-                case "Green" -> root.getStyleClass().add("theme-green");
-                case "Blue" -> root.getStyleClass().add("theme-blue");
-                default -> root.getStyleClass().add("theme-blue");
+            root.getStyleClass().removeAll("theme-red", "theme-green", "theme-blue", "theme-slate", "theme-light", "theme-dark-slate");
+            String lower = theme.toLowerCase();
+            if (lower.contains("slate") || lower.contains("dark")) {
+                root.getStyleClass().addAll("theme-dark-slate", "theme-slate");
+            } else if (lower.contains("red") || lower.contains("crimson")) {
+                root.getStyleClass().add("theme-red");
+            } else if (lower.contains("green") || lower.contains("emerald")) {
+                root.getStyleClass().add("theme-green");
+            } else {
+                root.getStyleClass().addAll("theme-light", "theme-blue");
             }
         }
     }
@@ -210,7 +232,7 @@ public class NavigationManager {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.initOwner(primaryStage);
+        if (primaryStage != null) alert.initOwner(primaryStage);
         alert.showAndWait();
     }
 
@@ -219,7 +241,7 @@ public class NavigationManager {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.initOwner(primaryStage);
+        if (primaryStage != null) alert.initOwner(primaryStage);
         alert.showAndWait();
     }
 
