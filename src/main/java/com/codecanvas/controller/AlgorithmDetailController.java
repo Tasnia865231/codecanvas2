@@ -36,6 +36,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -101,27 +102,42 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
 
     // [Simulation] View (VisuAlgo Interactive Canvas Engine)
     @FXML private Button toggleInputPanelBtn;
+    @FXML private Separator simToolbarSep1;
+    @FXML private HBox simPresetBox;
+    @FXML private Label simPresetLabel;
     @FXML private ComboBox<String> simPresetComboBox;
+    @FXML private HBox simSourceBox;
+    @FXML private Label simSourceLabel;
     @FXML private ComboBox<String> simSourceComboBox;
+    @FXML private HBox simTargetBox;
+    @FXML private TextField simTargetField;
     @FXML private Button simBuildRunBtn;
 
     @FXML private VBox simInputPanel;
+    @FXML private Label simInputPanelTitle;
     @FXML private Button closeInputPanelBtn;
     @FXML private TextArea simCustomInputArea;
+    @FXML private HBox graphOptionsBox;
+    @FXML private HBox indexingBox;
     @FXML private RadioButton zeroIndexedRadio;
     @FXML private RadioButton oneIndexedRadio;
     private ToggleGroup indexingToggleGroup;
 
+    @FXML private HBox inputFormatBox;
     @FXML private RadioButton edgeListRadio;
     @FXML private RadioButton adjMatrixRadio;
     @FXML private RadioButton adjListRadio;
     private ToggleGroup graphTypeToggleGroup;
 
+    @FXML private HBox outputLayoutBox;
     @FXML private RadioButton layoutDefaultRadio;
     @FXML private RadioButton layoutBipartiteRadio;
     @FXML private RadioButton layoutTreeRadio;
     @FXML private RadioButton layoutDagRadio;
     private ToggleGroup layoutToggleGroup;
+
+    @FXML private HBox arrayOptionsBox;
+    @FXML private TextField simTargetDrawerField;
 
     @FXML private VBox simStepCard;
     @FXML private Label simStepTitleLabel;
@@ -142,7 +158,6 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
     // [MCQ Quiz] View
     @FXML private Label mcqTopicTitleLabel;
     @FXML private Label mcqScoreBadge;
-    @FXML private Button submitQuizTopBtn;
     @FXML private Button submitQuizBottomBtn;
     @FXML private Button retakeQuizBtn;
     @FXML private VBox scoreVerdictCard;
@@ -156,6 +171,7 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
     private MediaPlayer mediaPlayer;
     private boolean isUserDraggingSlider = false;
     private String currentViewType = "Algorithm";
+    private boolean isRefreshingSourceCombo = false;
 
     // VisuAlgo Simulation Engine State
     private InteractiveGraphModel interactiveGraphModel;
@@ -272,6 +288,24 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         simPresetComboBox.setValue("Default");
         simPresetComboBox.setOnAction(e -> onPresetSelected());
 
+        // Dynamic Source Node selector listener
+        simSourceComboBox.setOnAction(e -> {
+            if (!isRefreshingSourceCombo && simSourceComboBox.getValue() != null) {
+                buildAndRunSimulation();
+            }
+        });
+
+        // Search Target Input controls (bidirectional sync and run on Enter)
+        if (simTargetField != null && simTargetDrawerField != null) {
+            simTargetField.textProperty().bindBidirectional(simTargetDrawerField.textProperty());
+        }
+        if (simTargetField != null) {
+            simTargetField.setOnAction(e -> buildAndRunSimulation());
+        }
+        if (simTargetDrawerField != null) {
+            simTargetDrawerField.setOnAction(e -> buildAndRunSimulation());
+        }
+
         // Toggle drawer
         toggleInputPanelBtn.setOnAction(e -> {
             boolean visible = !simInputPanel.isVisible();
@@ -385,8 +419,17 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
     }
 
     private void updateInputAreaFromModel() {
-        if (currentAlgorithm != null && (currentAlgorithm.getCategory().equalsIgnoreCase("Sorting") || currentAlgorithm.getName().contains("Search"))) {
-            if (customArrayData == null) customArrayData = new int[]{38, 27, 43, 3, 9, 82, 10, 19};
+        if (currentAlgorithm != null && (currentAlgorithm.getCategory().equalsIgnoreCase("Sorting") 
+                || currentAlgorithm.getCategory().equalsIgnoreCase("Searching")
+                || currentAlgorithm.getName().contains("Sort") 
+                || currentAlgorithm.getName().contains("Search"))) {
+            if (customArrayData == null) {
+                if (currentAlgorithm.getName().equalsIgnoreCase("Binary Search") || currentAlgorithm.getName().toLowerCase().contains("binary")) {
+                    customArrayData = new int[]{3, 9, 10, 19, 27, 38, 43, 82};
+                } else {
+                    customArrayData = new int[]{38, 27, 43, 3, 9, 82, 10, 19};
+                }
+            }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < customArrayData.length; i++) {
                 sb.append(customArrayData[i]).append(i == customArrayData.length - 1 ? "" : ", ");
@@ -401,12 +444,22 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
     }
 
     private void refreshSourceComboBox() {
-        List<String> items = new ArrayList<>();
-        for (VisualGraphNode n : interactiveGraphModel.getNodes()) {
-            items.add("Node " + n.getLabel());
+        isRefreshingSourceCombo = true;
+        try {
+            String currentSelection = simSourceComboBox.getValue();
+            List<String> items = new ArrayList<>();
+            for (VisualGraphNode n : interactiveGraphModel.getNodes()) {
+                items.add("Node " + n.getLabel());
+            }
+            simSourceComboBox.setItems(FXCollections.observableArrayList(items));
+            if (currentSelection != null && items.contains(currentSelection)) {
+                simSourceComboBox.setValue(currentSelection);
+            } else if (!items.isEmpty()) {
+                simSourceComboBox.setValue(items.get(0));
+            }
+        } finally {
+            isRefreshingSourceCombo = false;
         }
-        simSourceComboBox.setItems(FXCollections.observableArrayList(items));
-        if (!items.isEmpty()) simSourceComboBox.setValue(items.get(0));
     }
 
     private void buildAndRunSimulation() {
@@ -415,7 +468,10 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         // Check if user edited custom input
         String input = simCustomInputArea.getText();
         boolean isSortingOrSearch = currentAlgorithm != null && 
-                (currentAlgorithm.getCategory().equalsIgnoreCase("Sorting") || currentAlgorithm.getName().contains("Search"));
+                (currentAlgorithm.getCategory().equalsIgnoreCase("Sorting") 
+                 || currentAlgorithm.getCategory().equalsIgnoreCase("Searching")
+                 || currentAlgorithm.getName().contains("Sort") 
+                 || currentAlgorithm.getName().contains("Search"));
 
         if (isSortingOrSearch) {
             if (input != null && !input.isBlank()) {
@@ -430,6 +486,13 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
                     }
                 } catch (Exception ex) {
                     navManager.showErrorAlert("Input Error", "Invalid Array Format", "Please provide comma or space-separated numbers.");
+                }
+            }
+            if (currentAlgorithm != null && (currentAlgorithm.getName().equalsIgnoreCase("Binary Search") || currentAlgorithm.getName().toLowerCase().contains("binary"))) {
+                if (customArrayData == null) {
+                    customArrayData = new int[]{3, 9, 10, 19, 27, 38, 43, 82};
+                } else {
+                    Arrays.sort(customArrayData);
                 }
             }
         } else {
@@ -458,10 +521,27 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
                     break;
                 }
             }
+        } else if (!simSourceComboBox.getItems().isEmpty()) {
+            String label = simSourceComboBox.getItems().get(0).replace("Node", "").trim();
+            for (VisualGraphNode node : interactiveGraphModel.getNodes()) {
+                if (node.getLabel().equals(label)) {
+                    sourceIdx = node.getId();
+                    break;
+                }
+            }
         }
 
+        int targetVal = 27;
+        try {
+            if (simTargetField != null && simTargetField.getText() != null && !simTargetField.getText().isBlank()) {
+                targetVal = Integer.parseInt(simTargetField.getText().trim());
+            } else if (simTargetDrawerField != null && simTargetDrawerField.getText() != null && !simTargetDrawerField.getText().isBlank()) {
+                targetVal = Integer.parseInt(simTargetDrawerField.getText().trim());
+            }
+        } catch (NumberFormatException ignored) {}
+
         String algoName = currentAlgorithm != null ? currentAlgorithm.getName() : "BFS";
-        simulationFrames = InteractiveSimulationEngine.generateFramesForAlgorithm(algoName, interactiveGraphModel, sourceIdx, customArrayData);
+        simulationFrames = InteractiveSimulationEngine.generateFramesForAlgorithm(algoName, interactiveGraphModel, sourceIdx, customArrayData, targetVal);
 
         currentFrameIndex = 0;
         simTimelineSlider.setMin(0);
@@ -557,7 +637,6 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
     // ============================================================ MCQ CONTROLS
 
     private void initMcqControls() {
-        submitQuizTopBtn.setOnAction(e -> submitQuiz());
         submitQuizBottomBtn.setOnAction(e -> submitQuiz());
         retakeQuizBtn.setOnAction(e -> resetQuiz());
     }
@@ -587,23 +666,88 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         updateSaveButtonState();
     }
 
-    private void prepareSimulationEngineForAlgorithm() {
-        boolean isTreeOrDag = currentAlgorithm.getName().toLowerCase().contains("kruskal") ||
-                currentAlgorithm.getName().toLowerCase().contains("prim") ||
-                currentAlgorithm.getName().equalsIgnoreCase("Floyd-Warshall");
+    private void updateSimulationUIContext(boolean isArrayAlgo, boolean isBinarySearch) {
+        if (simSourceBox != null) {
+            simSourceBox.setVisible(!isArrayAlgo);
+            simSourceBox.setManaged(!isArrayAlgo);
+            simSourceBox.setDisable(isArrayAlgo);
+        }
+        if (simPresetBox != null) {
+            simPresetBox.setVisible(!isArrayAlgo);
+            simPresetBox.setManaged(!isArrayAlgo);
+            simPresetBox.setDisable(isArrayAlgo);
+        }
+        if (simToolbarSep1 != null) {
+            simToolbarSep1.setVisible(!isArrayAlgo || isBinarySearch);
+            simToolbarSep1.setManaged(!isArrayAlgo || isBinarySearch);
+        }
+        if (graphOptionsBox != null) {
+            graphOptionsBox.setVisible(!isArrayAlgo);
+            graphOptionsBox.setManaged(!isArrayAlgo);
+            graphOptionsBox.setDisable(isArrayAlgo);
+        }
+        if (simTargetBox != null) {
+            simTargetBox.setVisible(isBinarySearch);
+            simTargetBox.setManaged(isBinarySearch);
+            simTargetBox.setDisable(!isBinarySearch);
+        }
+        if (arrayOptionsBox != null) {
+            arrayOptionsBox.setVisible(isBinarySearch);
+            arrayOptionsBox.setManaged(isBinarySearch);
+            arrayOptionsBox.setDisable(!isBinarySearch);
+        }
+        if (simInputPanelTitle != null) {
+            simInputPanelTitle.setText(isArrayAlgo ? "Custom Array Elements" : "Custom Graph / Array Structure Input");
+        }
+        if (toggleInputPanelBtn != null) {
+            toggleInputPanelBtn.setText(isArrayAlgo ? "⚙️ Custom Array Input" : "⚙️ Custom Graph / Data Input");
+        }
+        if (simCustomInputArea != null) {
+            simCustomInputArea.setPromptText(isArrayAlgo
+                    ? (isBinarySearch ? "Enter sorted array values (e.g. 3, 9, 10, 19, 27, 38, 43, 82)"
+                                      : "Enter array values (e.g. 38, 27, 43, 3, 9, 82, 10, 19)")
+                    : "Enter custom graph edge list (u v w) or array values (e.g. 29, 10, 14, 37...)");
+        }
+    }
 
-        if (currentAlgorithm.getName().equalsIgnoreCase("DAG") || currentAlgorithm.getName().toLowerCase().contains("johnson")) {
-            interactiveGraphModel.loadDagPreset(false);
-            layoutDagRadio.setSelected(true);
-        } else if (isTreeOrDag) {
-            interactiveGraphModel.loadTreePreset(false);
-            layoutTreeRadio.setSelected(true);
+    private void prepareSimulationEngineForAlgorithm() {
+        if (currentAlgorithm == null) return;
+
+        boolean isSorting = currentAlgorithm.getCategory().equalsIgnoreCase("Sorting") || currentAlgorithm.getName().contains("Sort");
+        boolean isSearch = currentAlgorithm.getCategory().equalsIgnoreCase("Searching") || currentAlgorithm.getName().toLowerCase().contains("search");
+        boolean isArrayAlgo = isSorting || isSearch;
+        boolean isBinarySearch = currentAlgorithm.getName().equalsIgnoreCase("Binary Search") || currentAlgorithm.getName().toLowerCase().contains("binary");
+
+        updateSimulationUIContext(isArrayAlgo, isBinarySearch);
+
+        if (isArrayAlgo) {
+            if (isBinarySearch) {
+                customArrayData = new int[]{3, 9, 10, 19, 27, 38, 43, 82};
+                if (simTargetField != null) simTargetField.setText("27");
+                if (simTargetDrawerField != null) simTargetDrawerField.setText("27");
+            } else {
+                customArrayData = new int[]{38, 27, 43, 3, 9, 82, 10, 19};
+            }
         } else {
-            interactiveGraphModel.loadDefaultPreset(false);
-            layoutDefaultRadio.setSelected(true);
+            customArrayData = null;
+            boolean isTreeOrDag = currentAlgorithm.getName().toLowerCase().contains("kruskal") ||
+                    currentAlgorithm.getName().toLowerCase().contains("prim") ||
+                    currentAlgorithm.getName().equalsIgnoreCase("Floyd-Warshall");
+
+            if (currentAlgorithm.getName().equalsIgnoreCase("DAG") || currentAlgorithm.getName().toLowerCase().contains("johnson")) {
+                interactiveGraphModel.loadDagPreset(false);
+                layoutDagRadio.setSelected(true);
+            } else if (isTreeOrDag) {
+                interactiveGraphModel.loadTreePreset(false);
+                layoutTreeRadio.setSelected(true);
+            } else {
+                interactiveGraphModel.loadDefaultPreset(false);
+                layoutDefaultRadio.setSelected(true);
+            }
+
+            refreshSourceComboBox();
         }
 
-        refreshSourceComboBox();
         updateInputAreaFromModel();
         buildAndRunSimulation();
     }
@@ -758,7 +902,7 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         mediaViewContainer.setManaged(false);
         fallbackBox.setVisible(true);
         fallbackBox.setManaged(true);
-        videoUnavailableLabel.setText("Simulation video not available");
+        videoUnavailableLabel.setText("Video not available");
         fallbackDetailLabel.setText("Algorithm: " + currentAlgorithm.getName() + " (" + reason + ")\nPlace a valid MP4 into the videos123/ directory to view simulation video.");
     }
 
@@ -791,7 +935,6 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         scoreVerdictCard.setManaged(false);
         retakeQuizBtn.setVisible(false);
         retakeQuizBtn.setManaged(false);
-        submitQuizTopBtn.setDisable(false);
         submitQuizBottomBtn.setDisable(false);
 
         mcqTopicTitleLabel.setText("20-Question MCQ Quiz: " + currentAlgorithm.getName());
@@ -932,7 +1075,6 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         scoreVerdictCard.setVisible(true);
         scoreVerdictCard.setManaged(true);
 
-        submitQuizTopBtn.setDisable(true);
         submitQuizBottomBtn.setDisable(true);
         retakeQuizBtn.setVisible(true);
         retakeQuizBtn.setManaged(true);
@@ -985,7 +1127,6 @@ public class AlgorithmDetailController implements Initializable, NavigationManag
         scoreVerdictCard.setManaged(false);
         retakeQuizBtn.setVisible(false);
         retakeQuizBtn.setManaged(false);
-        submitQuizTopBtn.setDisable(false);
         submitQuizBottomBtn.setDisable(false);
 
         buildQuestionsUI();

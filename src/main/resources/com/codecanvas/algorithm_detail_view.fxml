@@ -96,11 +96,11 @@
                 </HBox>
             </VBox>
 
-            <!-- Video Not Found Fallback (Exact requirement label: "Simulation video not available") -->
+            <!-- Video Not Found Fallback (Exact requirement label: "Video not available") -->
             <VBox fx:id="fallbackBox" spacing="12" alignment="CENTER" styleClass="fallback-panel" 
                   visible="false" managed="false" VBox.vgrow="ALWAYS">
                 <Label text="⚠️" styleClass="warning-icon"/>
-                <Label fx:id="videoUnavailableLabel" text="Simulation video not available" styleClass="fallback-title"/>
+                <Label fx:id="videoUnavailableLabel" text="Video not available" styleClass="fallback-title"/>
                 <Label fx:id="fallbackDetailLabel" text="" wrapText="true" textAlignment="CENTER" styleClass="fallback-msg"/>
             </VBox>
         </VBox>
@@ -110,13 +110,23 @@
             <!-- Top Toolbar for Interactive Simulation -->
             <HBox spacing="10" alignment="CENTER_LEFT" styleClass="sub-card">
                 <Button fx:id="toggleInputPanelBtn" text="⚙️ Custom Graph / Data Input" styleClass="secondary-btn"/>
-                <Separator orientation="VERTICAL"/>
+                <Separator fx:id="simToolbarSep1" orientation="VERTICAL"/>
 
-                <Label text="Preset:" styleClass="form-label"/>
-                <ComboBox fx:id="simPresetComboBox" prefWidth="120" styleClass="modern-choice-box"/>
+                <HBox fx:id="simPresetBox" spacing="6" alignment="CENTER_LEFT">
+                    <Label fx:id="simPresetLabel" text="Preset:" styleClass="form-label"/>
+                    <ComboBox fx:id="simPresetComboBox" prefWidth="120" styleClass="modern-choice-box"/>
+                </HBox>
 
-                <Label text="Source Node:" styleClass="form-label"/>
-                <ComboBox fx:id="simSourceComboBox" prefWidth="85" styleClass="modern-choice-box"/>
+                <HBox fx:id="simSourceBox" spacing="6" alignment="CENTER_LEFT">
+                    <Label fx:id="simSourceLabel" text="Source Node:" styleClass="form-label"/>
+                    <ComboBox fx:id="simSourceComboBox" prefWidth="85" styleClass="modern-choice-box"/>
+                </HBox>
+
+                <!-- Search Target Input for Searching Algorithms (e.g. Binary Search) -->
+                <HBox fx:id="simTargetBox" spacing="6" alignment="CENTER_LEFT" visible="false" managed="false">
+                    <Label text="Target:" styleClass="form-label"/>
+                    <TextField fx:id="simTargetField" prefWidth="70" text="27" styleClass="form-input"/>
+                </HBox>
 
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button fx:id="simBuildRunBtn" text="⚡ Build &amp; Run" styleClass="accent-btn"/>
@@ -125,7 +135,7 @@
             <!-- Embedded Collapsible Custom Graph / Data Input Panel -->
             <VBox fx:id="simInputPanel" spacing="8" styleClass="input-drawer" visible="false" managed="false">
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label text="Custom Graph / Array Structure Input" styleClass="section-title"/>
+                    <Label fx:id="simInputPanelTitle" text="Custom Graph / Array Structure Input" styleClass="section-title"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <Button fx:id="closeInputPanelBtn" text="✕ Close Drawer" styleClass="subtle-btn"/>
                 </HBox>
@@ -135,9 +145,10 @@
                           promptText="Enter custom graph edge list (u v w) or array values (e.g. 29, 10, 14, 37...)"
                           styleClass="code-view"/>
 
-                <HBox spacing="18" alignment="CENTER_LEFT" styleClass="options-box">
+                <!-- Graph-specific options box (hidden for array algorithms) -->
+                <HBox fx:id="graphOptionsBox" spacing="18" alignment="CENTER_LEFT" styleClass="options-box">
                     <!-- Indexing Options -->
-                    <HBox spacing="6" alignment="CENTER_LEFT">
+                    <HBox fx:id="indexingBox" spacing="6" alignment="CENTER_LEFT">
                         <Label text="Indexing:" styleClass="form-label"/>
                         <RadioButton fx:id="zeroIndexedRadio" text="0-Indexed" selected="true" styleClass="mcq-radio"/>
                         <RadioButton fx:id="oneIndexedRadio" text="1-Indexed" styleClass="mcq-radio"/>
@@ -146,7 +157,7 @@
                     <Separator orientation="VERTICAL"/>
 
                     <!-- Graph Input Type Options -->
-                    <HBox spacing="6" alignment="CENTER_LEFT">
+                    <HBox fx:id="inputFormatBox" spacing="6" alignment="CENTER_LEFT">
                         <Label text="Input Format:" styleClass="form-label"/>
                         <RadioButton fx:id="edgeListRadio" text="Edge List" selected="true" styleClass="mcq-radio"/>
                         <RadioButton fx:id="adjMatrixRadio" text="Adjacency Matrix" styleClass="mcq-radio"/>
@@ -156,13 +167,20 @@
                     <Separator orientation="VERTICAL"/>
 
                     <!-- Output Graph Layout Options -->
-                    <HBox spacing="6" alignment="CENTER_LEFT">
+                    <HBox fx:id="outputLayoutBox" spacing="6" alignment="CENTER_LEFT">
                         <Label text="Output Layout:" styleClass="form-label"/>
                         <RadioButton fx:id="layoutDefaultRadio" text="Default" selected="true" styleClass="mcq-radio"/>
                         <RadioButton fx:id="layoutBipartiteRadio" text="Bipartite" styleClass="mcq-radio"/>
                         <RadioButton fx:id="layoutTreeRadio" text="Tree" styleClass="mcq-radio"/>
                         <RadioButton fx:id="layoutDagRadio" text="DAG" styleClass="mcq-radio"/>
                     </HBox>
+                </HBox>
+
+                <!-- Array-relevant Target Input Option Box for Binary Search -->
+                <HBox fx:id="arrayOptionsBox" spacing="10" alignment="CENTER_LEFT" styleClass="options-box" visible="false" managed="false">
+                    <Label text="Search Target:" styleClass="form-label"/>
+                    <TextField fx:id="simTargetDrawerField" prefWidth="80" text="27" styleClass="form-input"/>
+                    <Label text="(Numerical target value to search for in sorted array)" styleClass="subtle-label"/>
                 </HBox>
             </VBox>
 
@@ -207,7 +225,6 @@
                 <Label fx:id="mcqTopicTitleLabel" text="20-Question MCQ Assessment" styleClass="section-title"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Label fx:id="mcqScoreBadge" text="Session: 0/20 | Total MCQs: 0 | Rank: Beginner" styleClass="status-pill"/>
-                <Button fx:id="submitQuizTopBtn" text="✔ Submit Quiz" styleClass="primary-btn"/>
                 <Button fx:id="retakeQuizBtn" text="↺ Reset / Retake" styleClass="secondary-btn" visible="false" managed="false"/>
             </HBox>
 
