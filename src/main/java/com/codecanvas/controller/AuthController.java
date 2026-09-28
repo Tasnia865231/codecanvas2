@@ -164,7 +164,9 @@ public class AuthController implements Initializable {
             return;
         }
 
-        User newUser = new User(username, "", "", fullName, email);
+        User newUser = new User(username, "", "", fullName, email, "STUDENT");
+        newUser.setUserLevel("Beginner");
+        newUser.setTotalCorrectMcqs(0);
         boolean created = dbHelper.registerUser(newUser, password);
         if (!created) {
             signUpErrorLabel.setText("Username '" + username + "' is already taken. Please choose another.");

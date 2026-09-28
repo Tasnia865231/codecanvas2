@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Bellman-Ford",
+    "question": "What distinguishes Bellman-Ford from Dijkstra's algorithm?",
+    "options": ["It handles negative edge weights and detects negative cycles", "It is faster than Dijkstra", "It only works on DAGs", "It uses a FIFO queue"],
+    "answerIndex": 0,
+    "explanation": "Bellman-Ford supports negative weights and detects negative cycles by relaxing edges V - 1 times."
+  },
+  {
+    "id": 2,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the time complexity of Bellman-Ford on a graph with V vertices and E edges?",
+    "options": ["O(V * E)", "O((V + E) log V)", "O(V^2)", "O(V^3)"],
+    "answerIndex": 0,
+    "explanation": "Bellman-Ford iterates |V| - 1 times over all |E| edges, yielding O(V * E)."
+  },
+  {
+    "id": 3,
+    "algorithm": "Bellman-Ford",
+    "question": "Why does Bellman-Ford relax edges exactly |V| - 1 times?",
+    "options": ["A simple shortest path in a graph with V vertices has at most V - 1 edges", "Because V is prime", "To allow recursion", "It is an arbitrary constant"],
+    "answerIndex": 0,
+    "explanation": "The longest possible simple path without cycles contains at most |V| - 1 edges."
+  },
+  {
+    "id": 4,
+    "algorithm": "Bellman-Ford",
+    "question": "How does Bellman-Ford detect a negative weight cycle?",
+    "options": ["If an edge can still be relaxed on the V-th iteration", "If dist[source] < 0", "If all distances are 0", "If vertex count is odd"],
+    "answerIndex": 0,
+    "explanation": "If any distance decreases on the |V|-th pass, a negative weight cycle exists."
+  },
+  {
+    "id": 5,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the space complexity of the Bellman-Ford algorithm?",
+    "options": ["O(V)", "O(E * V)", "O(1)", "O(V^2)"],
+    "answerIndex": 0,
+    "explanation": "It only requires a 1D distance array of size V."
+  },
+  {
+    "id": 6,
+    "algorithm": "Bellman-Ford",
+    "question": "What happens to the shortest path problem when a graph contains a negative cycle reachable from the source?",
+    "options": ["Shortest path is undefined because distance can decrease indefinitely to -Infinity", "Shortest path is 0", "Shortest path is the longest cycle", "Returns Integer.MAX_VALUE"],
+    "answerIndex": 0,
+    "explanation": "Traversing the negative cycle infinitely many times reduces the path cost without bound."
+  },
+  {
+    "id": 7,
+    "algorithm": "Bellman-Ford",
+    "question": "Can Bellman-Ford solve shortest paths on a Directed Acyclic Graph (DAG)?",
+    "options": ["Yes, in O(V * E) time, though DAG relaxation in topological order is faster O(V + E)", "No, only graphs with cycles", "Only if weights are positive", "Never"],
+    "answerIndex": 0,
+    "explanation": "It works correctly on DAGs, but topological sorting is much more efficient."
+  },
+  {
+    "id": 8,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the Shortest Path Faster Algorithm (SPFA)?",
+    "options": ["A queue-based optimization of Bellman-Ford", "A version of QuickSort", "A hardware accelerator", "A genetic algorithm"],
+    "answerIndex": 0,
+    "explanation": "SPFA optimizes Bellman-Ford by only relaxing vertices whose distances changed in the previous pass."
+  },
+  {
+    "id": 9,
+    "algorithm": "Bellman-Ford",
+    "question": "Which routing protocol in computer networks uses the Bellman-Ford algorithm?",
+    "options": ["Routing Information Protocol (RIP)", "Border Gateway Protocol (BGP)", "OSPF", "HTTP"],
+    "answerIndex": 0,
+    "explanation": "RIP uses the distance-vector routing protocol based on Bellman-Ford."
+  },
+  {
+    "id": 10,
+    "algorithm": "Bellman-Ford",
+    "question": "If a graph has V vertices and V edges with no negative cycle, how many passes are needed?",
+    "options": ["At most V - 1 passes", "V^2 passes", "1 pass", "Zero passes"],
+    "answerIndex": 0,
+    "explanation": "V - 1 passes are mathematically sufficient for any cycle-free shortest path."
+  },
+  {
+    "id": 11,
+    "algorithm": "Bellman-Ford",
+    "question": "Can Bellman-Ford be stopped early if no distance changes during a pass?",
+    "options": ["Yes, this optimization terminates when no edges are relaxed in a full iteration", "No, it must always complete V-1 passes", "Only if graph is complete", "Only if source is vertex 0"],
+    "answerIndex": 0,
+    "explanation": "If an entire pass yields zero relaxations, the distances have converged."
+  },
+  {
+    "id": 12,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the initial tentative distance for all non-source vertices in Bellman-Ford?",
+    "options": ["Infinity (Integer.MAX_VALUE)", "0", "-1", "1000"],
+    "answerIndex": 0,
+    "explanation": "Non-source nodes start at infinity, and the source starts at 0."
+  },
+  {
+    "id": 13,
+    "algorithm": "Bellman-Ford",
+    "question": "What edge data structure is most convenient for Bellman-Ford?",
+    "options": ["A flat list or array of all edges (u, v, weight)", "Adjacency matrix", "Binary heap", "B-Tree"],
+    "answerIndex": 0,
+    "explanation": "Because each pass simply iterates over all edges, a flat edge list is ideal."
+  },
+  {
+    "id": 14,
+    "algorithm": "Bellman-Ford",
+    "question": "How does Bellman-Ford handle disconnected components?",
+    "options": ["Vertices unreachable from source remain at Infinity", "Throws an Exception", "Connects them with 0-weight edges", "Halts immediately"],
+    "answerIndex": 0,
+    "explanation": "Unreachable vertices never satisfy dist[u] + w < dist[v] since dist[u] is Infinity."
+  },
+  {
+    "id": 15,
+    "algorithm": "Bellman-Ford",
+    "question": "Is Bellman-Ford a greedy algorithm?",
+    "options": ["No, it is based on Dynamic Programming", "Yes, strictly greedy like Dijkstra", "It is divide-and-conquer", "It is randomized"],
+    "answerIndex": 0,
+    "explanation": "Bellman-Ford iteratively builds solutions for paths of length k using subproblems of length k-1 (DP)."
+  },
+  {
+    "id": 16,
+    "algorithm": "Bellman-Ford",
+    "question": "If a negative cycle exists but is NOT reachable from the source vertex, does Bellman-Ford detect it?",
+    "options": ["No, it only detects negative cycles reachable from the designated source", "Yes, always", "It crashes", "It prints a warning"],
+    "answerIndex": 0,
+    "explanation": "Relaxations only propagate along paths reachable from the source vertex."
+  },
+  {
+    "id": 17,
+    "algorithm": "Bellman-Ford",
+    "question": "How can Bellman-Ford be adapted to find ANY negative cycle in a graph?",
+    "options": ["Add a virtual source connected to all vertices with 0-weight edges", "Reverse all edge signs", "Multiply weights by -1", "Run BFS first"],
+    "answerIndex": 0,
+    "explanation": "A virtual super-source with 0-weight edges to all nodes makes all cycles reachable."
+  },
+  {
+    "id": 18,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the worst-case time complexity of Bellman-Ford on a complete graph?",
+    "options": ["O(V^3)", "O(V^2)", "O(V log V)", "O(V)"],
+    "answerIndex": 0,
+    "explanation": "On a complete graph E = O(V^2), so O(V * E) = O(V^3)."
+  },
+  {
+    "id": 19,
+    "algorithm": "Bellman-Ford",
+    "question": "Can Bellman-Ford handle undirected graphs with negative edges?",
+    "options": ["An undirected negative edge constitutes a negative cycle of length 2 (u <-> v)", "Yes, without any issues", "Only if weights are even", "Only if V < 5"],
+    "answerIndex": 0,
+    "explanation": "An undirected edge with negative weight allows bouncing back and forth endlessly, forming a negative 2-cycle."
+  },
+  {
+    "id": 20,
+    "algorithm": "Bellman-Ford",
+    "question": "What is the return value of standard Bellman-Ford?",
+    "options": ["Boolean flag indicating whether a negative cycle exists, alongside distance array", "Only the execution time", "A single integer", "Sorted list of edges"],
+    "answerIndex": 0,
+    "explanation": "It returns the distances and true/false indicating cycle presence."
+  }
+]

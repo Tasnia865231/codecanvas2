@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Quick Sort",
+    "question": "What is the average time complexity of Quick Sort?",
+    "options": ["O(N log N)", "O(N^2)", "O(N)", "O(log N)"],
+    "answerIndex": 0,
+    "explanation": "On average, balanced partitioning divides the array in half, achieving O(N log N)."
+  },
+  {
+    "id": 2,
+    "algorithm": "Quick Sort",
+    "question": "What is the worst-case time complexity of Quick Sort?",
+    "options": ["O(N^2)", "O(N log N)", "O(N)", "O(N^3)"],
+    "answerIndex": 0,
+    "explanation": "When partitions are severely unbalanced (e.g., sorted array with first/last element pivot), complexity degrades to O(N^2)."
+  },
+  {
+    "id": 3,
+    "algorithm": "Quick Sort",
+    "question": "Which partition scheme uses two pointers moving towards each other?",
+    "options": ["Hoare Partition Scheme", "Lomuto Partition Scheme", "Dutch National Flag", "Merge Partition"],
+    "answerIndex": 0,
+    "explanation": "Hoare's scheme uses pointers from both ends moving inward and does fewer swaps than Lomuto's."
+  },
+  {
+    "id": 4,
+    "algorithm": "Quick Sort",
+    "question": "What is the auxiliary space complexity of standard in-place Quick Sort?",
+    "options": ["O(log N) for the recursion stack", "O(1)", "O(N)", "O(N^2)"],
+    "answerIndex": 0,
+    "explanation": "The call stack requires O(log N) space in average and best cases."
+  },
+  {
+    "id": 5,
+    "algorithm": "Quick Sort",
+    "question": "Is standard Quick Sort a stable sorting algorithm?",
+    "options": ["No, equal elements may have their relative order swapped during partitioning", "Yes, always stable", "Only for strings", "Only when using Lomuto"],
+    "answerIndex": 0,
+    "explanation": "Long-distance swaps across the pivot can reorder duplicate keys, making standard Quick Sort unstable."
+  },
+  {
+    "id": 6,
+    "algorithm": "Quick Sort",
+    "question": "Which technique helps avoid Quick Sort's worst-case O(N^2) on sorted inputs?",
+    "options": ["Randomized pivot selection (or median-of-three)", "Always choosing the first element", "Using recursion", "Iterating from right to left"],
+    "answerIndex": 0,
+    "explanation": "Picking a random pivot or median-of-three prevents deterministic worst-case degradation."
+  },
+  {
+    "id": 7,
+    "algorithm": "Quick Sort",
+    "question": "What algorithmic paradigm does Quick Sort belong to?",
+    "options": ["Divide and Conquer", "Dynamic Programming", "Greedy Algorithm", "Backtracking"],
+    "answerIndex": 0,
+    "explanation": "Quick Sort partitions the array (Divide), recursively sorts halves (Conquer), and merges implicitly."
+  },
+  {
+    "id": 8,
+    "algorithm": "Quick Sort",
+    "question": "What is the dual-pivot Quick Sort algorithm?",
+    "options": ["Yaroslavskiy's partition algorithm using two pivots, default in Java's Arrays.sort()", "Quick Sort with two threads", "Quick Sort on 2D arrays", "MergeSort hybrid"],
+    "answerIndex": 0,
+    "explanation": "Java's standard library uses Vladimir Yaroslavskiy's Dual-Pivot QuickSort for primitives."
+  },
+  {
+    "id": 9,
+    "algorithm": "Quick Sort",
+    "question": "When does Lomuto's partition scheme exhibit poor performance?",
+    "options": ["When the array contains many identical elements", "When array size is power of 2", "When elements are floats", "Never"],
+    "answerIndex": 0,
+    "explanation": "Lomuto does not handle duplicate elements well, resulting in O(N^2) when all elements are equal."
+  },
+  {
+    "id": 10,
+    "algorithm": "Quick Sort",
+    "question": "What is Introsort?",
+    "options": ["Hybrid sort starting with QuickSort and switching to HeapSort if recursion depth exceeds 2 log N", "Internal sorting only", "Interactive sort", "Visualizer sort"],
+    "answerIndex": 0,
+    "explanation": "Introsort guarantees worst-case O(N log N) by falling back to HeapSort if QuickSort recurses too deep."
+  },
+  {
+    "id": 11,
+    "algorithm": "Quick Sort",
+    "question": "What is the best-case time complexity of Quick Sort?",
+    "options": ["O(N log N)", "O(N)", "O(1)", "O(log N)"],
+    "answerIndex": 0,
+    "explanation": "When the pivot divides the array into two equal halves at every level, best-case is O(N log N)."
+  },
+  {
+    "id": 12,
+    "algorithm": "Quick Sort",
+    "question": "How many recursive calls are made at depth k of Quick Sort?",
+    "options": ["2^k", "k", "k^2", "log k"],
+    "answerIndex": 0,
+    "explanation": "Each node divides into two subproblems, forming a binary recursion tree with 2^k calls at depth k."
+  },
+  {
+    "id": 13,
+    "algorithm": "Quick Sort",
+    "question": "What is Tail Call Elimination in Quick Sort?",
+    "options": ["Recursively sorting the smaller partition and using a loop for the larger partition to bound stack depth to O(log N)", "Deleting the last element", "Sorting backwards", "Avoiding pivot selection"],
+    "answerIndex": 0,
+    "explanation": "Tail call elimination bounds stack usage to O(log N) even in the worst case."
+  },
+  {
+    "id": 14,
+    "algorithm": "Quick Sort",
+    "question": "Can Quick Sort be used on Linked Lists efficiently?",
+    "options": ["Yes, but it lacks random access, making MergeSort more popular for linked lists", "No, impossible", "Only doubly linked lists", "Only circular lists"],
+    "answerIndex": 0,
+    "explanation": "Lack of random index access makes partitioning less cache-friendly than MergeSort on linked lists."
+  },
+  {
+    "id": 15,
+    "algorithm": "Quick Sort",
+    "question": "Why is Quick Sort often faster in practice than MergeSort for arrays?",
+    "options": ["Better cache locality and zero memory allocation overhead", "It does fewer comparisons", "It is stable", "It uses queues"],
+    "answerIndex": 0,
+    "explanation": "In-place partition operations maximize CPU cache line reuse without allocating auxiliary buffers."
+  },
+  {
+    "id": 16,
+    "algorithm": "Quick Sort",
+    "question": "What is the 3-Way Partitioning (Dutch National Flag) variant of Quick Sort?",
+    "options": ["Divides array into: less than pivot, equal to pivot, and greater than pivot", "Sorts 3 arrays simultaneously", "Uses 3 pivots", "Triples array size"],
+    "answerIndex": 0,
+    "explanation": "3-way partitioning solves the duplicate keys problem, running in linear O(N) time for identical keys."
+  },
+  {
+    "id": 17,
+    "algorithm": "Quick Sort",
+    "question": "What is the minimum number of comparisons needed to sort N elements in comparison-based sorting?",
+    "options": ["Omega(N log N)", "O(N)", "O(1)", "O(log N)"],
+    "answerIndex": 0,
+    "explanation": "Decision tree depth proves comparison sorting requires at least Omega(N log N) comparisons in worst case."
+  },
+  {
+    "id": 18,
+    "algorithm": "Quick Sort",
+    "question": "In Lomuto partitioning, which index is usually chosen as pivot?",
+    "options": ["The last element (arr[high])", "The first element", "A random middle element", "The minimum element"],
+    "answerIndex": 0,
+    "explanation": "Classical Lomuto partitioning selects the last element arr[high] as the pivot."
+  },
+  {
+    "id": 19,
+    "algorithm": "Quick Sort",
+    "question": "What is the recurrence relation for Quick Sort in the average case?",
+    "options": ["T(N) = 2T(N/2) + O(N)", "T(N) = T(N-1) + O(1)", "T(N) = 4T(N/2) + O(N)", "T(N) = T(N/2) + O(1)"],
+    "answerIndex": 0,
+    "explanation": "Balanced partitioning yields T(N) = 2T(N/2) + O(N), which evaluates to O(N log N)."
+  },
+  {
+    "id": 20,
+    "algorithm": "Quick Sort",
+    "question": "Who invented Quick Sort?",
+    "options": ["Tony Hoare (1959)", "John von Neumann", "Alan Turing", "Donald Knuth"],
+    "answerIndex": 0,
+    "explanation": "Sir Tony Hoare developed QuickSort in 1959 while working on machine translation."
+  }
+]

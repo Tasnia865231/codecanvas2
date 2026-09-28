@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Kruskal's",
+    "question": "What is the primary objective of Kruskal's algorithm?",
+    "options": ["Find single-source shortest paths", "Find a Minimum Spanning Tree (MST) in a connected weighted undirected graph", "Detect strongly connected components", "Compute maximum network flow"],
+    "answerIndex": 1,
+    "explanation": "Kruskal's algorithm finds a Minimum Spanning Tree connecting all vertices with minimum total edge weight."
+  },
+  {
+    "id": 2,
+    "algorithm": "Kruskal's",
+    "question": "What is the first step executed in Kruskal's algorithm?",
+    "options": ["Choose an arbitrary root vertex", "Sort all edges in non-decreasing order of weight", "Initialize a priority queue of vertices", "Run BFS to check connectivity"],
+    "answerIndex": 1,
+    "explanation": "Kruskal's begins by sorting all edges in ascending order of weight."
+  },
+  {
+    "id": 3,
+    "algorithm": "Kruskal's",
+    "question": "Which data structure is primarily used to detect and prevent cycles in Kruskal's algorithm?",
+    "options": ["Stack", "Disjoint Set Union (Union-Find)", "Binary Search Tree", "Adjacency Matrix"],
+    "answerIndex": 1,
+    "explanation": "Disjoint Set Union (DSU) efficiently tracks connected components and detects cycles in near O(1) amortized time."
+  },
+  {
+    "id": 4,
+    "algorithm": "Kruskal's",
+    "question": "What is the overall time complexity of Kruskal's algorithm using DSU with path compression and union by rank?",
+    "options": ["O(V^2)", "O(E log E) or O(E log V)", "O(V * E)", "O(V^3)"],
+    "answerIndex": 1,
+    "explanation": "Sorting edges dominates the time complexity at O(E log E) = O(E log V), while DSU operations take O(E * α(V))."
+  },
+  {
+    "id": 5,
+    "algorithm": "Kruskal's",
+    "question": "Which algorithmic design paradigm does Kruskal's algorithm follow?",
+    "options": ["Dynamic Programming", "Greedy Paradigm", "Divide and Conquer", "Backtracking"],
+    "answerIndex": 1,
+    "explanation": "Kruskal's makes locally optimal greedy choices by picking the smallest available edge that does not form a cycle."
+  },
+  {
+    "id": 6,
+    "algorithm": "Kruskal's",
+    "question": "How does Kruskal's algorithm determine if adding edge (u, v) will create a cycle?",
+    "options": ["If find(u) == find(v)", "If degree(u) > 2", "If weight(u, v) < 0", "If u and v are both odd"],
+    "answerIndex": 0,
+    "explanation": "If the representative roots of u and v are identical, they already belong to the same component, so adding (u, v) forms a cycle."
+  },
+  {
+    "id": 7,
+    "algorithm": "Kruskal's",
+    "question": "How many edges are present in a completed Minimum Spanning Tree with V vertices?",
+    "options": ["V", "V - 1", "V + 1", "E / 2"],
+    "answerIndex": 1,
+    "explanation": "Any spanning tree of a graph with V vertices contains exactly V - 1 edges."
+  },
+  {
+    "id": 8,
+    "algorithm": "Kruskal's",
+    "question": "What is the auxiliary space complexity of Kruskal's algorithm?",
+    "options": ["O(1)", "O(V + E)", "O(V^2)", "O(E^2)"],
+    "answerIndex": 1,
+    "explanation": "Kruskal's stores all E edges for sorting and maintains parent/rank arrays of size V for DSU, taking O(V + E) space."
+  },
+  {
+    "id": 9,
+    "algorithm": "Kruskal's",
+    "question": "Can Kruskal's algorithm handle graphs with negative edge weights?",
+    "options": ["Yes, it correctly finds the MST even with negative weights", "No, it enters an infinite loop", "Only if all weights are shifted by a constant", "Only on DAGs"],
+    "answerIndex": 0,
+    "explanation": "Kruskal's works correctly with negative weights because negative edges are sorted first and prioritized."
+  },
+  {
+    "id": 10,
+    "algorithm": "Kruskal's",
+    "question": "What does Kruskal's algorithm produce if the input graph is disconnected?",
+    "options": ["Throws a runtime exception", "A Minimum Spanning Forest", "A null pointer", "An empty set"],
+    "answerIndex": 1,
+    "explanation": "On disconnected graphs, Kruskal's builds a Minimum Spanning Tree for each connected component, forming a Minimum Spanning Forest."
+  },
+  {
+    "id": 11,
+    "algorithm": "Kruskal's",
+    "question": "What is the amortized time complexity of the DSU find operation with path compression and union by rank?",
+    "options": ["O(1)", "O(α(V)) where α is inverse Ackermann function", "O(log V)", "O(V)"],
+    "answerIndex": 1,
+    "explanation": "Path compression combined with union by rank guarantees nearly constant O(α(V)) amortized time."
+  },
+  {
+    "id": 12,
+    "algorithm": "Kruskal's",
+    "question": "On which type of graph is Kruskal's generally preferred over standard Prim's?",
+    "options": ["Sparse graphs with few edges (E << V^2)", "Extremely dense graphs where E ≈ V^2", "Complete graphs", "Graphs with no edges"],
+    "answerIndex": 0,
+    "explanation": "On sparse graphs, sorting E edges is fast (O(E log V)), making Kruskal's simpler and faster than dense-graph algorithms."
+  },
+  {
+    "id": 13,
+    "algorithm": "Kruskal's",
+    "question": "If all edge weights in a connected undirected graph are distinct, what can be said about its MST?",
+    "options": ["There are multiple distinct MSTs", "The Minimum Spanning Tree is guaranteed to be unique", "No MST exists", "Kruskal's will fail"],
+    "answerIndex": 1,
+    "explanation": "By the Cut Property, if every edge weight is strictly distinct, the graph has a unique Minimum Spanning Tree."
+  },
+  {
+    "id": 14,
+    "algorithm": "Kruskal's",
+    "question": "What happens if Kruskal's algorithm encounters parallel edges between vertices u and v?",
+    "options": ["It crashes", "The lower-weight edge is considered first during iteration", "Both edges are automatically added", "Parallel edges must be removed manually first"],
+    "answerIndex": 1,
+    "explanation": "Because edges are sorted, the minimum-weight parallel edge is considered first, and the heavier one is later rejected for forming a cycle."
+  },
+  {
+    "id": 15,
+    "algorithm": "Kruskal's",
+    "question": "When can Kruskal's algorithm terminate early?",
+    "options": ["As soon as exactly V - 1 edges have been added to the MST", "When half of all edges are processed", "When vertex 0 is visited", "Never, it must examine all E edges"],
+    "answerIndex": 0,
+    "explanation": "An MST on V vertices requires exactly V - 1 edges; once V - 1 edges are accepted, the tree is complete."
+  },
+  {
+    "id": 16,
+    "algorithm": "Kruskal's",
+    "question": "What is path compression in Disjoint Set Union?",
+    "options": ["Making every visited node point directly to the set representative root during find", "Compressing edge weights", "Reducing the number of vertices", "Deleting leaf nodes"],
+    "answerIndex": 0,
+    "explanation": "Path compression flattens the tree structure by setting parent[x] = find(parent[x]), reducing future lookup heights to 1."
+  },
+  {
+    "id": 17,
+    "algorithm": "Kruskal's",
+    "question": "Does Kruskal's maintain a single connected growing tree at every intermediate step?",
+    "options": ["No, it maintains a forest of disjoint trees that gradually merge", "Yes, it always grows one single component", "Only if the graph is bipartite", "Only if source is vertex 0"],
+    "answerIndex": 0,
+    "explanation": "Unlike Prim's, Kruskal's adds edges anywhere in the graph, growing multiple disjoint trees before uniting them."
+  },
+  {
+    "id": 18,
+    "algorithm": "Kruskal's",
+    "question": "If all edge weights in a connected graph are equal to 1, what does Kruskal's algorithm do?",
+    "options": ["Any valid spanning tree is an MST, found in O(E) with DSU without complex sorting", "It fails to find an MST", "It produces a cycle", "Throws ArithmeticException"],
+    "answerIndex": 0,
+    "explanation": "With uniform weights, any spanning tree has identical cost (V - 1), so sorting is trivial."
+  },
+  {
+    "id": 19,
+    "algorithm": "Kruskal's",
+    "question": "Who introduced Kruskal's algorithm and in what year?",
+    "options": ["Joseph Kruskal in 1956", "Robert Prim in 1957", "Edsger Dijkstra in 1959", "Donald Knuth in 1968"],
+    "answerIndex": 0,
+    "explanation": "Joseph Kruskal published this algorithm in 1956 in the Proceedings of the American Mathematical Society."
+  },
+  {
+    "id": 20,
+    "algorithm": "Kruskal's",
+    "question": "What is the Cycle Property in graph theory relevant to Kruskal's?",
+    "options": ["The strictly heaviest edge in any cycle cannot belong to any Minimum Spanning Tree", "Every cycle must have an even length", "Cycles always have zero weight", "All trees contain cycles"],
+    "answerIndex": 0,
+    "explanation": "The Cycle Property states that for any cycle C, the strictly maximum weight edge in C is never part of an MST."
+  }
+]

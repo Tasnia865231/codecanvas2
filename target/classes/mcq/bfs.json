@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "BFS",
+    "question": "What primary data structure is used to implement Breadth-First Search?",
+    "options": ["Stack", "Queue (FIFO)", "Priority Queue", "Binary Search Tree"],
+    "answerIndex": 1,
+    "explanation": "BFS traverses level by level, necessitating a First-In-First-Out (FIFO) Queue."
+  },
+  {
+    "id": 2,
+    "algorithm": "BFS",
+    "question": "What is the time complexity of BFS on an adjacency list representation with V vertices and E edges?",
+    "options": ["O(V * E)", "O(V^2)", "O(V + E)", "O(E log V)"],
+    "answerIndex": 2,
+    "explanation": "Each vertex is visited once and each adjacent edge is inspected once, yielding O(V + E)."
+  },
+  {
+    "id": 3,
+    "algorithm": "BFS",
+    "question": "What is the space complexity of BFS?",
+    "options": ["O(1)", "O(V)", "O(E)", "O(V * E)"],
+    "answerIndex": 1,
+    "explanation": "The queue and the visited set hold up to V vertices in the worst case."
+  },
+  {
+    "id": 4,
+    "algorithm": "BFS",
+    "question": "Can standard BFS find the shortest path in a graph with non-uniform positive edge weights?",
+    "options": ["Yes, always", "No, it only guarantees shortest paths for unweighted graphs", "Yes, if no negative cycles exist", "Only on directed acyclic graphs"],
+    "answerIndex": 1,
+    "explanation": "BFS only computes shortest hop-count paths; for weighted graphs, Dijkstra's algorithm is required."
+  },
+  {
+    "id": 5,
+    "algorithm": "BFS",
+    "question": "In BFS, when is a vertex marked as visited?",
+    "options": ["When it is dequeued", "When it is enqueued", "After all neighbors are explored", "Never"],
+    "answerIndex": 1,
+    "explanation": "Vertices must be marked visited upon enqueuing to prevent redundant insertion into the queue."
+  },
+  {
+    "id": 6,
+    "algorithm": "BFS",
+    "question": "Which problem cannot be directly solved using Breadth-First Search?",
+    "options": ["Connected components in undirected graphs", "Shortest path on unweighted maze", "Negative cycle detection in general weighted graphs", "Bipartite graph validation"],
+    "answerIndex": 2,
+    "explanation": "Detecting negative weight cycles requires Bellman-Ford or SPFA, as BFS does not account for edge weights."
+  },
+  {
+    "id": 7,
+    "algorithm": "BFS",
+    "question": "What does the BFS tree height represent from the source node?",
+    "options": ["The maximum edge weight", "The shortest distance in terms of edge count to each node", "The degree of the source node", "The chromatic number"],
+    "answerIndex": 1,
+    "explanation": "BFS discovers vertices in increasing order of their hop count from the root."
+  },
+  {
+    "id": 8,
+    "algorithm": "BFS",
+    "question": "What is the time complexity of BFS if the graph is represented as an adjacency matrix?",
+    "options": ["O(V + E)", "O(V^2)", "O(E log V)", "O(V log E)"],
+    "answerIndex": 1,
+    "explanation": "Iterating over all rows in a V x V matrix requires inspecting V entries per vertex, taking O(V^2)."
+  },
+  {
+    "id": 9,
+    "algorithm": "BFS",
+    "question": "Which graph traversal discovers all 1-hop neighbors before any 2-hop neighbors?",
+    "options": ["Depth-First Search", "Breadth-First Search", "Topological Sort", "Kruskal's Algorithm"],
+    "answerIndex": 1,
+    "explanation": "BFS explores all vertices at depth d before moving to depth d + 1."
+  },
+  {
+    "id": 10,
+    "algorithm": "BFS",
+    "question": "In a complete graph K_n, what is the maximum number of elements in the BFS queue at any time?",
+    "options": ["1", "n - 1", "n", "n * (n - 1) / 2"],
+    "answerIndex": 1,
+    "explanation": "From the source, all remaining n - 1 vertices are enqueued in the very first level."
+  },
+  {
+    "id": 11,
+    "algorithm": "BFS",
+    "question": "Can BFS be used to detect cycles in an undirected graph?",
+    "options": ["No, only DFS can detect cycles", "Yes, if an adjacent vertex is already visited and not the parent", "Only if the graph is planar", "Only if vertices are numbered sequentially"],
+    "answerIndex": 1,
+    "explanation": "If an explored neighbor is visited and not the immediate parent in the BFS tree, a cross-edge / cycle exists."
+  },
+  {
+    "id": 12,
+    "algorithm": "BFS",
+    "question": "What happens if a graph is disconnected and BFS is run starting from vertex 0?",
+    "options": ["It visits all vertices", "It throws an IndexOutOfBoundsException", "It only visits vertices in the component containing vertex 0", "It enters an infinite loop"],
+    "answerIndex": 2,
+    "explanation": "BFS only explores vertices reachable from the designated source vertex."
+  },
+  {
+    "id": 13,
+    "algorithm": "BFS",
+    "question": "What is the typical memory consumption behavior of BFS compared to DFS on broad trees?",
+    "options": ["BFS consumes significantly more memory due to wide level queues", "BFS consumes less memory than DFS", "Both consume exactly identical memory", "BFS consumes O(1) auxiliary memory"],
+    "answerIndex": 0,
+    "explanation": "BFS queue stores an entire level, which can be O(b^d) where b is branching factor and d is depth."
+  },
+  {
+    "id": 14,
+    "algorithm": "BFS",
+    "question": "What is 0-1 BFS?",
+    "options": ["BFS running on graphs with only 0 or 1 vertices", "Shortest path algorithm using a Double-Ended Queue (Deque) for weights 0 and 1", "BFS with a single boolean flag", "DFS simulated using binary flags"],
+    "answerIndex": 1,
+    "explanation": "0-1 BFS inserts 0-weight edges at the front and 1-weight edges at the back of a Deque in O(V + E) time."
+  },
+  {
+    "id": 15,
+    "algorithm": "BFS",
+    "question": "Which classification does the BFS algorithm fall under?",
+    "options": ["Greedy algorithm", "Divide and conquer", "Graph traversal / Search", "Dynamic programming"],
+    "answerIndex": 2,
+    "explanation": "BFS is fundamentally a systematic graph traversal and search algorithm."
+  },
+  {
+    "id": 16,
+    "algorithm": "BFS",
+    "question": "In an unweighted bipartite graph, BFS can check 2-colorability by:",
+    "options": ["Assigning alternate colors to alternating levels", "Coloring all visited nodes blue", "Reversing directed edges", "Calculating the determinant"],
+    "answerIndex": 0,
+    "explanation": "Nodes at even levels get one color, and nodes at odd levels get the other."
+  },
+  {
+    "id": 17,
+    "algorithm": "BFS",
+    "question": "What edge type does NOT appear in an undirected BFS forest?",
+    "options": ["Tree edges", "Cross edges", "Back edges spanning multiple levels", "Both tree and cross edges"],
+    "answerIndex": 2,
+    "explanation": "In undirected BFS, non-tree edges can only connect vertices in the same level or adjacent levels."
+  },
+  {
+    "id": 18,
+    "algorithm": "BFS",
+    "question": "How does BFS verify if an undirected graph is connected?",
+    "options": ["Count if visited count equals |V| after single traversal", "Check if queue size ever reaches zero", "Verify if time complexity is O(V)", "Check if edge count is even"],
+    "answerIndex": 0,
+    "explanation": "If visited.size() == V after running BFS from any node, the graph is connected."
+  },
+  {
+    "id": 19,
+    "algorithm": "BFS",
+    "question": "If a graph has negative edges but is unweighted, does BFS work?",
+    "options": ["Graphs cannot be unweighted and have negative weights simultaneously", "Yes, BFS does not inspect weights", "No, it crashes", "Only on DAGs"],
+    "answerIndex": 0,
+    "explanation": "By definition, an unweighted graph treats all edges as uniform unit cost (weight = 1)."
+  },
+  {
+    "id": 20,
+    "algorithm": "BFS",
+    "question": "What is the diameter of an unweighted tree computable with BFS?",
+    "options": ["Running BFS twice: first from arbitrary node to farthest u, then from u to farthest v", "Running BFS once from the root", "Sum of all edge weights", "Number of leaf nodes"],
+    "answerIndex": 0,
+    "explanation": "A double BFS reliably computes the diameter (longest path) of any unweighted tree in linear time."
+  }
+]

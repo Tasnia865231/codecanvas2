@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Prim's",
+    "question": "What is the primary function of Prim's algorithm?",
+    "options": ["Find all-pairs shortest paths", "Construct a Minimum Spanning Tree for a connected, weighted undirected graph", "Topologically order vertices", "Perform bipartition validation"],
+    "answerIndex": 1,
+    "explanation": "Prim's algorithm finds a Minimum Spanning Tree (MST) by growing a single connected tree from an arbitrary starting vertex."
+  },
+  {
+    "id": 2,
+    "algorithm": "Prim's",
+    "question": "How does Prim's algorithm differ from Kruskal's algorithm during execution?",
+    "options": ["Prim's grows a single connected tree continuously; Kruskal's builds a forest of merging components", "Prim's only works on directed graphs", "Prim's does not use greedy choices", "Prim's requires sorting all edges at the start"],
+    "answerIndex": 0,
+    "explanation": "Prim's maintains a single growing component at each step, whereas Kruskal's adds edges across multiple disjoint trees."
+  },
+  {
+    "id": 3,
+    "algorithm": "Prim's",
+    "question": "What data structure is standard for achieving O((V + E) log V) time complexity in Prim's?",
+    "options": ["FIFO Queue", "Min-Priority Queue (Binary Heap)", "Stack", "Disjoint Set Union"],
+    "answerIndex": 1,
+    "explanation": "A Min-Priority Queue extracts the minimum weight cut edge connected to the active tree in O(log V) time."
+  },
+  {
+    "id": 4,
+    "algorithm": "Prim's",
+    "question": "What is the time complexity of Prim's algorithm using an Adjacency Matrix without a priority queue?",
+    "options": ["O(V^2)", "O(V + E)", "O(E log V)", "O(V log V)"],
+    "answerIndex": 0,
+    "explanation": "With an adjacency matrix and simple linear scanning for the min-key vertex across V iterations, Prim's runs in O(V^2)."
+  },
+  {
+    "id": 5,
+    "algorithm": "Prim's",
+    "question": "Which data structure achieves Prim's optimal theoretical bound of O(E + V log V)?",
+    "options": ["Binary Heap", "Fibonacci Heap", "Treap", "Linked List"],
+    "answerIndex": 1,
+    "explanation": "Fibonacci Heaps provide O(1) amortized decrease-key operations, reducing Prim's complexity to O(E + V log V)."
+  },
+  {
+    "id": 6,
+    "algorithm": "Prim's",
+    "question": "What is the Cut Property that underpins Prim's algorithm?",
+    "options": ["The minimum weight edge crossing any cut between tree vertices and non-tree vertices must belong to the MST", "Every cut has even edge count", "Any edge with weight > 10 is deleted", "The cut vertex must have degree 1"],
+    "answerIndex": 0,
+    "explanation": "The Cut Property proves that the minimum-weight edge crossing the cut between the tree and remaining vertices is safe to add."
+  },
+  {
+    "id": 7,
+    "algorithm": "Prim's",
+    "question": "Which algorithm behaves almost identically to Prim's algorithm in its structure and mechanics?",
+    "options": ["Dijkstra's Shortest Path Algorithm", "Quick Sort", "Kosaraju's Algorithm", "Floyd-Warshall Algorithm"],
+    "answerIndex": 0,
+    "explanation": "Prim's and Dijkstra's share nearly identical priority-queue loops; Prim's relaxes edge weight directly, whereas Dijkstra relaxes cumulative distance."
+  },
+  {
+    "id": 8,
+    "algorithm": "Prim's",
+    "question": "What is the key difference in the relaxation step between Prim's and Dijkstra's?",
+    "options": ["Prim's updates key[v] = min(key[v], weight(u,v)); Dijkstra updates dist[v] = min(dist[v], dist[u] + weight(u,v))", "Prim's ignores weights", "Dijkstra does not use a priority queue", "Prim's checks for negative cycles"],
+    "answerIndex": 0,
+    "explanation": "Prim's keys represent the distance from the MST tree cut, not cumulative path distance from a source."
+  },
+  {
+    "id": 9,
+    "algorithm": "Prim's",
+    "question": "What is the auxiliary space complexity of Prim's algorithm?",
+    "options": ["O(1)", "O(V)", "O(V^2)", "O(E * V)"],
+    "answerIndex": 1,
+    "explanation": "Prim's requires key[], parent[], and inMST[] boolean arrays of size V, using O(V) auxiliary space."
+  },
+  {
+    "id": 10,
+    "algorithm": "Prim's",
+    "question": "Can Prim's algorithm handle negative edge weights?",
+    "options": ["Yes, it correctly finds the MST even with negative weights", "No, negative weights cause an infinite loop", "Only if there are no negative cycles", "Only if weights are even"],
+    "answerIndex": 0,
+    "explanation": "Unlike Dijkstra, Prim's works correctly with negative edge weights because it seeks minimum cut edges, not shortest paths."
+  },
+  {
+    "id": 11,
+    "algorithm": "Prim's",
+    "question": "For dense graphs where E ≈ V^2, which version of Prim's is optimal?",
+    "options": ["Prim's using an Adjacency Matrix O(V^2)", "Kruskal's algorithm O(V^2 log V)", "Prim's with binary heap", "DFS"],
+    "answerIndex": 0,
+    "explanation": "On dense graphs, Prim's O(V^2) with adjacency matrix beats heap-based implementations due to no priority queue overhead."
+  },
+  {
+    "id": 12,
+    "algorithm": "Prim's",
+    "question": "What initial key value is assigned to all vertices (except the start vertex) in Prim's?",
+    "options": ["0", "Infinity", "-1", "Degree of vertex"],
+    "answerIndex": 1,
+    "explanation": "All non-source vertices start with key = Infinity, while the starting vertex has key = 0."
+  },
+  {
+    "id": 13,
+    "algorithm": "Prim's",
+    "question": "How many times is extract-min performed in Prim's algorithm?",
+    "options": ["V times", "E times", "V - 1 times", "1 time"],
+    "answerIndex": 0,
+    "explanation": "Each of the V vertices is extracted from the priority queue exactly once."
+  },
+  {
+    "id": 14,
+    "algorithm": "Prim's",
+    "question": "What happens if Prim's algorithm is run on a disconnected graph?",
+    "options": ["It only finds the MST for the connected component containing the start vertex", "It throws an exception", "It connects all components with virtual edges", "It hangs indefinitely"],
+    "answerIndex": 0,
+    "explanation": "Prim's grows from one vertex, so it will only span the connected component containing that initial vertex."
+  },
+  {
+    "id": 15,
+    "algorithm": "Prim's",
+    "question": "Who originally developed the algorithm before Robert Prim rediscovered it in 1957?",
+    "options": ["Vojtěch Jarník in 1930", "Edsger Dijkstra in 1959", "Joseph Kruskal in 1956", "Richard Bellman in 1958"],
+    "answerIndex": 0,
+    "explanation": "Czech mathematician Vojtěch Jarník first developed the algorithm in 1930; it is often called the Jarník-Prim algorithm."
+  },
+  {
+    "id": 16,
+    "algorithm": "Prim's",
+    "question": "Can the choice of initial start vertex affect the total weight of the resulting MST?",
+    "options": ["No, the total weight of the MST is always identical regardless of the start vertex", "Yes, start vertex determines minimum weight", "Only if weights are negative", "Only if V > 50"],
+    "answerIndex": 0,
+    "explanation": "Any valid MST of a connected graph has the exact same total minimum weight, regardless of starting vertex."
+  },
+  {
+    "id": 17,
+    "algorithm": "Prim's",
+    "question": "In Prim's algorithm, what does the parent[v] array represent?",
+    "options": ["The tree edge connecting v to the growing MST", "The root node of the graph", "The shortest path hop count", "The degree of v"],
+    "answerIndex": 0,
+    "explanation": "parent[v] records which tree vertex connects v into the MST, allowing edge reconstruction."
+  },
+  {
+    "id": 18,
+    "algorithm": "Prim's",
+    "question": "How does Prim's avoid forming cycles when selecting edges?",
+    "options": ["By only considering edges that connect an in-tree vertex to an out-of-tree vertex", "By running DFS before every insertion", "By using a cycle detection stack", "By limiting edge weights"],
+    "answerIndex": 0,
+    "explanation": "Because edges are always chosen across the cut (from inMST to !inMST), cycle formation is fundamentally impossible."
+  },
+  {
+    "id": 19,
+    "algorithm": "Prim's",
+    "question": "If an undirected graph has a unique lightest edge e, does e belong to every MST?",
+    "options": ["Yes, by the Cut Property, the unique lightest edge must belong to every MST", "No, it depends on the start vertex", "Only if the graph is bipartite", "Never"],
+    "answerIndex": 0,
+    "explanation": "The global lightest edge e crosses the cut between its two endpoints, so the Cut Property guarantees it is in every MST."
+  },
+  {
+    "id": 20,
+    "algorithm": "Prim's",
+    "question": "What is the maximum number of decrease-key operations in heap-based Prim's?",
+    "options": ["O(E)", "O(V)", "O(1)", "O(V^2)"],
+    "answerIndex": 0,
+    "explanation": "Each edge in the graph can trigger at most one decrease-key relaxation, giving at most O(E) decrease-key operations."
+  }
+]

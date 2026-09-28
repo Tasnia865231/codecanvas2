@@ -3,6 +3,7 @@ package com.codecanvas;
 import com.codecanvas.controller.MainShellController;
 import com.codecanvas.db.DBHelper;
 import com.codecanvas.navigation.NavigationManager;
+import com.codecanvas.util.AppExecutor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,13 +17,14 @@ import java.net.URL;
 /**
  * Application entry point for CodeCanvas - Production-ready Algorithm Visualizer.
  * Initializes SQLite persistence schema, creates videos123/ directory, loads the
- * main navigation shell, and displays the Authentication System (Figure 1).
+ * main navigation shell, displays Authentication System (Figure 1), and shuts down
+ * the AppExecutor thread pool upon termination.
  */
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // 1. Ensure SQLite schema exists (users, saved_items, person, execution_trace)
+        // 1. Ensure SQLite schema exists (users with FK, saved_items, person, execution_trace)
         new DBHelper().initSchema();
 
         // 2. Ensure local video directory exists for dynamic simulation video detection
@@ -57,6 +59,13 @@ public class Main extends Application {
         primaryStage.setMinHeight(640);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        // Clean shutdown of ExecutorService thread pool
+        AppExecutor.shutdown();
+        super.stop();
     }
 
     public static void main(String[] args) {

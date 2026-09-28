@@ -5,6 +5,7 @@ import com.codecanvas.model.AlgorithmItem;
 import com.codecanvas.model.SavedItem;
 import com.codecanvas.model.User;
 import com.codecanvas.navigation.NavigationManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +15,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * Controller for Figures 6 & 7: Saved Items Hub & Detail viewer.
- * Provides filter tabs for [Algorithm], [Code], and [Simulator], loads SQLite bookmarks
- * for the authenticated user, and allows reviewing/deleting saved items.
+ * Provides filter tabs for [All], [Algorithm], [Code], [Videos], and [Simulation],
+ * loads SQLite bookmarks for the authenticated user, and allows reviewing/deleting saved items.
  */
 public class SavedHubController implements Initializable {
 
@@ -30,7 +32,8 @@ public class SavedHubController implements Initializable {
     @FXML private ToggleButton allFilterBtn;
     @FXML private ToggleButton algoFilterBtn;
     @FXML private ToggleButton codeFilterBtn;
-    @FXML private ToggleButton simFilterBtn;
+    @FXML private ToggleButton videosFilterBtn;
+    @FXML private ToggleButton simulationFilterBtn;
     private ToggleGroup filterGroup;
 
     // TableView
@@ -72,13 +75,15 @@ public class SavedHubController implements Initializable {
         allFilterBtn.setToggleGroup(filterGroup);
         algoFilterBtn.setToggleGroup(filterGroup);
         codeFilterBtn.setToggleGroup(filterGroup);
-        simFilterBtn.setToggleGroup(filterGroup);
+        videosFilterBtn.setToggleGroup(filterGroup);
+        simulationFilterBtn.setToggleGroup(filterGroup);
         allFilterBtn.setSelected(true);
 
         allFilterBtn.setOnAction(e -> applyFilter("ALL"));
         algoFilterBtn.setOnAction(e -> applyFilter("Algorithm"));
         codeFilterBtn.setOnAction(e -> applyFilter("Code"));
-        simFilterBtn.setOnAction(e -> applyFilter("Simulator"));
+        videosFilterBtn.setOnAction(e -> applyFilter("Videos"));
+        simulationFilterBtn.setOnAction(e -> applyFilter("Simulation"));
     }
 
     private void initTable() {
@@ -104,7 +109,22 @@ public class SavedHubController implements Initializable {
             return;
         }
 
-        itemsData.setAll(dbHelper.findSavedItems(user.getUsername(), currentFilter));
+        List<SavedItem> allUserItems = dbHelper.findSavedItems(user.getUsername(), null);
+        List<SavedItem> filtered;
+
+        if (currentFilter.equalsIgnoreCase("ALL")) {
+            filtered = allUserItems;
+        } else if (currentFilter.equalsIgnoreCase("Videos")) {
+            filtered = allUserItems.stream()
+                    .filter(i -> i.getType().equalsIgnoreCase("Videos") || i.getType().equalsIgnoreCase("Simulator"))
+                    .toList();
+        } else {
+            filtered = allUserItems.stream()
+                    .filter(i -> i.getType().equalsIgnoreCase(currentFilter))
+                    .toList();
+        }
+
+        itemsData.setAll(filtered);
         statusSummaryLabel.setText("Found " + itemsData.size() + " saved item(s) [" + currentFilter + "]");
 
         if (!itemsData.isEmpty()) {
@@ -142,26 +162,31 @@ public class SavedHubController implements Initializable {
         SavedItem item = savedTable.getSelectionModel().getSelectedItem();
         if (item == null) return;
 
-        // Create domain AlgorithmItem to navigate to Detail Hub
         AlgorithmItem algo = new AlgorithmItem(
                 "0", item.getAlgorithmName(), "Graph", "O(V + E)", "O(V)",
                 "Saved algorithm entry", "TheAlgorithms", "Java",
                 "src/main/resources/algorithms/" + item.getAlgorithmName().toLowerCase() + ".md",
-                "src/main/java/" + item.getAlgorithmName() + ".java",
+                "src/main/java/com/thealgorithms/" + item.getAlgorithmName().replace(" ", "") + ".java",
                 item.getAlgorithmName() + ".mp4"
         );
-        navManager.navigateTo(NavigationManager.Screen.DETAIL, algo);
+
+        navManager.navigateTo(NavigationManager.Screen.ALGORITHM_DETAIL, algo);
     }
 
     private void onDeleteBookmark(ActionEvent event) {
         SavedItem item = savedTable.getSelectionModel().getSelectedItem();
         if (item == null) return;
 
-        dbHelper.deleteSavedItem(item.getId());
-        itemsData.remove(item);
-        statusSummaryLabel.setText("Deleted bookmark: " + item.getTitle());
-        if (itemsData.isEmpty()) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm Deletion");
+        confirm.setHeaderText("Delete Bookmark");
+        confirm.setContentText("Are you sure you want to remove '" + item.getTitle() + "' from your bookmarks?");
+
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            dbHelper.deleteSavedItem(item.getId());
+            itemsData.remove(item);
             clearDetail();
+            statusSummaryLabel.setText("Bookmark deleted successfully.");
         }
     }
 }
