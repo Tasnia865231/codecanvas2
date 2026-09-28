@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Merge Sort",
+    "question": "What is the time complexity of Merge Sort in the worst case?",
+    "options": ["O(N log N)", "O(N^2)", "O(N)", "O(log N)"],
+    "answerIndex": 0,
+    "explanation": "Merge Sort guarantees O(N log N) across worst, average, and best cases."
+  },
+  {
+    "id": 2,
+    "algorithm": "Merge Sort",
+    "question": "Is standard Merge Sort stable?",
+    "options": ["Yes, it preserves the relative order of duplicate elements", "No, it is unstable", "Only for integers", "Only when inverted"],
+    "answerIndex": 0,
+    "explanation": "By taking elements from the left subarray on ties (<=), Merge Sort preserves stability."
+  },
+  {
+    "id": 3,
+    "algorithm": "Merge Sort",
+    "question": "What is the auxiliary space complexity of standard Merge Sort on arrays?",
+    "options": ["O(N)", "O(1)", "O(log N)", "O(N^2)"],
+    "answerIndex": 0,
+    "explanation": "Merging two sorted subarrays requires an auxiliary array buffer of size O(N)."
+  },
+  {
+    "id": 4,
+    "algorithm": "Merge Sort",
+    "question": "Which algorithmic paradigm does Merge Sort implement?",
+    "options": ["Divide and Conquer", "Dynamic Programming", "Greedy", "Branch and Bound"],
+    "answerIndex": 0,
+    "explanation": "Merge Sort divides array into two halves, recursively sorts them, and merges the sorted halves."
+  },
+  {
+    "id": 5,
+    "algorithm": "Merge Sort",
+    "question": "What is the recurrence relation for Merge Sort?",
+    "options": ["T(N) = 2T(N/2) + O(N)", "T(N) = T(N-1) + O(1)", "T(N) = T(N/2) + O(1)", "T(N) = 3T(N/3) + O(1)"],
+    "answerIndex": 0,
+    "explanation": "Dividing into 2 halves of size N/2 and merging in linear O(N) gives T(N) = 2T(N/2) + O(N)."
+  },
+  {
+    "id": 6,
+    "algorithm": "Merge Sort",
+    "question": "Why is Merge Sort preferred for sorting singly linked lists?",
+    "options": ["It does not require random access and can merge nodes in O(1) auxiliary space", "It runs in O(N) time", "It uses binary search", "It avoids recursion"],
+    "answerIndex": 0,
+    "explanation": "Pointer manipulation enables merging linked list nodes without allocating additional array buffers."
+  },
+  {
+    "id": 7,
+    "algorithm": "Merge Sort",
+    "question": "What is TimSort?",
+    "options": ["A hybrid sorting algorithm combining Merge Sort and Insertion Sort", "A timer utility", "Hardware sort", "Parallel quicksort"],
+    "answerIndex": 0,
+    "explanation": "TimSort adapts Merge Sort for real-world runs combined with Insertion Sort, used in Python and Java Objects."
+  },
+  {
+    "id": 8,
+    "algorithm": "Merge Sort",
+    "question": "What is Bottom-Up (Iterative) Merge Sort?",
+    "options": ["Non-recursive Merge Sort merging subarrays of size 1, 2, 4, 8...", "Sorting upside down", "Reverse sorting", "Stack-based sort"],
+    "answerIndex": 0,
+    "explanation": "Iterative Merge Sort bypasses recursion stack overhead by doubling subarray merge widths."
+  },
+  {
+    "id": 9,
+    "algorithm": "Merge Sort",
+    "question": "What is the maximum recursion tree depth of Merge Sort on an array of size N?",
+    "options": ["ceil(log2(N))", "N", "N / 2", "sqrt(N)"],
+    "answerIndex": 0,
+    "explanation": "Halving the input size at each step yields a recursion tree of height log2(N)."
+  },
+  {
+    "id": 10,
+    "algorithm": "Merge Sort",
+    "question": "Who invented Merge Sort?",
+    "options": ["John von Neumann (1945)", "Tony Hoare", "Alan Turing", "Donald Knuth"],
+    "answerIndex": 0,
+    "explanation": "John von Neumann designed Merge Sort in 1945 for the EDVAC computer."
+  },
+  {
+    "id": 11,
+    "algorithm": "Merge Sort",
+    "question": "Can Merge Sort be used for External Sorting of massive datasets larger than RAM?",
+    "options": ["Yes, External Merge Sort sorts chunks in memory and merges disk runs efficiently", "No, it requires all data in RAM", "Only on GPUs", "Only with SSDs"],
+    "answerIndex": 0,
+    "explanation": "External Merge Sort streams sequential runs from disk with minimal memory footprints."
+  },
+  {
+    "id": 12,
+    "algorithm": "Merge Sort",
+    "question": "How many comparisons are made in the merge step of two sorted arrays of size N/2?",
+    "options": ["At most N - 1 comparisons", "N^2 comparisons", "log N comparisons", "Exactly N/2"],
+    "answerIndex": 0,
+    "explanation": "Each comparison places at least one element; the last element requires no comparison, bounding comparisons to N - 1."
+  },
+  {
+    "id": 13,
+    "algorithm": "Merge Sort",
+    "question": "How can the Inversion Count of an array be computed in O(N log N) time?",
+    "options": ["Modifying the merge step of Merge Sort to count when right element is smaller than left", "Running QuickSort", "Nested loops", "Matrix exponentiation"],
+    "answerIndex": 0,
+    "explanation": "When an element from the right array is picked during merge, all remaining elements in the left subarray form inversions."
+  },
+  {
+    "id": 14,
+    "algorithm": "Merge Sort",
+    "question": "What is In-Place Merge Sort?",
+    "options": ["Merge Sort using block permutations or rotation to achieve O(1) auxiliary space at the cost of higher constants", "Sorting in place with malloc", "QuickSort", "HeapSort"],
+    "answerIndex": 0,
+    "explanation": "In-place merging algorithms eliminate the O(N) buffer but incur significant runtime constant overhead."
+  },
+  {
+    "id": 15,
+    "algorithm": "Merge Sort",
+    "question": "What is the best-case time complexity of standard Merge Sort?",
+    "options": ["O(N log N)", "O(N)", "O(1)", "O(log N)"],
+    "answerIndex": 0,
+    "explanation": "Standard Merge Sort always divides and merges through all log N levels, maintaining O(N log N)."
+  },
+  {
+    "id": 16,
+    "algorithm": "Merge Sort",
+    "question": "How can standard Merge Sort be optimized to run in O(N) on already sorted arrays?",
+    "options": ["Check if arr[mid] <= arr[mid+1] before calling merge()", "Reverse the array", "Use a hash table", "Skip recursion"],
+    "answerIndex": 0,
+    "explanation": "If arr[mid] <= arr[mid + 1], the two halves are already in order, so merging can be completely skipped."
+  },
+  {
+    "id": 17,
+    "algorithm": "Merge Sort",
+    "question": "What is K-Way Merge Sort?",
+    "options": ["Dividing array into K parts and merging them using a Min-Heap of size K", "Sorting K arrays in parallel", "Running sort K times", "Radix sort variant"],
+    "answerIndex": 0,
+    "explanation": "K-way merging utilizes a min-heap to pick the smallest among K active run pointers in O(log K) time."
+  },
+  {
+    "id": 18,
+    "algorithm": "Merge Sort",
+    "question": "Is Merge Sort an in-place algorithm for arrays?",
+    "options": ["No, standard Merge Sort requires O(N) additional auxiliary space", "Yes, always in-place", "Only for small arrays", "Only for floats"],
+    "answerIndex": 0,
+    "explanation": "Merging requires a separate array buffer of size N, making it not in-place."
+  },
+  {
+    "id": 19,
+    "algorithm": "Merge Sort",
+    "question": "What is the cache performance of Merge Sort compared to Quick Sort on arrays?",
+    "options": ["Worse cache performance due to auxiliary array copying and larger working memory set", "Much better cache performance", "Identical", "Merge Sort has 0 cache misses"],
+    "answerIndex": 0,
+    "explanation": "Merge Sort's auxiliary buffer copying disrupts CPU cache locality compared to in-place QuickSort."
+  },
+  {
+    "id": 20,
+    "algorithm": "Merge Sort",
+    "question": "What makes Merge Sort highly suited for parallel computation?",
+    "options": ["Subproblems on left and right subarrays are completely disjoint and can run on separate threads simultaneously", "It uses pointers", "It has no base case", "It is linear"],
+    "answerIndex": 0,
+    "explanation": "The two recursive subproblems have zero shared state, enabling effortless multithreaded fork-join parallelism."
+  }
+]

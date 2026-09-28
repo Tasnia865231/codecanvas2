@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "DFS",
+    "question": "Which data structure is inherently used by Depth-First Search?",
+    "options": ["FIFO Queue", "LIFO Stack (or recursion call stack)", "Priority Queue", "Hash Table"],
+    "answerIndex": 1,
+    "explanation": "DFS dives down recursive paths using the LIFO system call stack or an explicit Stack."
+  },
+  {
+    "id": 2,
+    "algorithm": "DFS",
+    "question": "What is the time complexity of DFS using an adjacency list?",
+    "options": ["O(V + E)", "O(V^2)", "O(E log V)", "O(V log V)"],
+    "answerIndex": 0,
+    "explanation": "DFS visits every vertex and traverses each edge once, achieving O(V + E)."
+  },
+  {
+    "id": 3,
+    "algorithm": "DFS",
+    "question": "What is the worst-case space complexity of recursive DFS?",
+    "options": ["O(1)", "O(E)", "O(V)", "O(V^2)"],
+    "answerIndex": 2,
+    "explanation": "In a degenerate chain graph, the recursion call stack can grow to depth V."
+  },
+  {
+    "id": 4,
+    "algorithm": "DFS",
+    "question": "Which algorithmic application relies primarily on DFS discovery and finish times?",
+    "options": ["Dijkstra's Shortest Path", "Kosaraju's Strongly Connected Components", "Prim's Minimum Spanning Tree", "Kruskal's MST"],
+    "answerIndex": 1,
+    "explanation": "Kosaraju and Tarjan algorithms use DFS timestamps to find strongly connected components."
+  },
+  {
+    "id": 5,
+    "algorithm": "DFS",
+    "question": "Can DFS be used to produce a valid Topological Sort of a DAG?",
+    "options": ["No, only BFS can do topological sort", "Yes, by inserting vertices into a list in decreasing order of finish time", "Only if the DAG has no sinks", "Only for binary trees"],
+    "answerIndex": 1,
+    "explanation": "Post-order reversal (decreasing finish time) yields a valid topological ordering."
+  },
+  {
+    "id": 6,
+    "algorithm": "DFS",
+    "question": "What type of edge in a directed DFS indicates the presence of a directed cycle?",
+    "options": ["Tree edge", "Forward edge", "Cross edge", "Back edge"],
+    "answerIndex": 3,
+    "explanation": "A back edge points from a descendant to an active ancestor on the recursion stack, forming a cycle."
+  },
+  {
+    "id": 7,
+    "algorithm": "DFS",
+    "question": "In DFS on an undirected graph, what types of edges can exist?",
+    "options": ["Tree edges and Cross edges only", "Tree edges and Back edges only", "Forward edges and Cross edges only", "All four edge types"],
+    "answerIndex": 1,
+    "explanation": "Undirected DFS trees contain only Tree edges and Back edges."
+  },
+  {
+    "id": 8,
+    "algorithm": "DFS",
+    "question": "How does Tarjan's algorithm detect bridges (cut edges) using DFS?",
+    "options": ["Counting vertex degrees", "Comparing discovery time tin[u] with low-link value low[v]", "Running Dijkstra from each edge", "Inverting edge directions"],
+    "answerIndex": 1,
+    "explanation": "If low[v] > tin[u], edge (u, v) is a bridge because v has no alternative path to ancestors of u."
+  },
+  {
+    "id": 9,
+    "algorithm": "DFS",
+    "question": "What is an articulation point (cut vertex)?",
+    "options": ["A vertex whose removal increases the number of connected components", "A leaf vertex in the DFS tree", "The root node of every graph", "A vertex with maximum degree"],
+    "answerIndex": 0,
+    "explanation": "An articulation point disconnects the graph if removed."
+  },
+  {
+    "id": 10,
+    "algorithm": "DFS",
+    "question": "What is the maximum recursion depth of DFS on a tree with N nodes?",
+    "options": ["N - 1", "log N", "N / 2", "1"],
+    "answerIndex": 0,
+    "explanation": "A degenerate linear line tree has depth N - 1."
+  },
+  {
+    "id": 11,
+    "algorithm": "DFS",
+    "question": "What is the difference between Pre-order and Post-order traversal in DFS?",
+    "options": ["Pre-order processes upon first visit; Post-order processes after all descendants finish", "Pre-order uses queues; Post-order uses stacks", "They are identical in graphs", "Post-order runs in reverse time"],
+    "answerIndex": 0,
+    "explanation": "Pre-order records discovery; Post-order records completion of all subtree explorations."
+  },
+  {
+    "id": 12,
+    "algorithm": "DFS",
+    "question": "What is Iterative Deepening DFS (IDDFS)?",
+    "options": ["DFS that searches breadth-first using increasing depth limits", "DFS with two stacks", "DFS that never backtracks", "Parallel DFS"],
+    "answerIndex": 0,
+    "explanation": "IDDFS combines the space efficiency of DFS with the optimality of BFS."
+  },
+  {
+    "id": 13,
+    "algorithm": "DFS",
+    "question": "What is the time complexity of DFS on an adjacency matrix?",
+    "options": ["O(V + E)", "O(V^2)", "O(E^2)", "O(V log E)"],
+    "answerIndex": 1,
+    "explanation": "Checking all neighbors of V vertices requires scanning each row of size V, totaling O(V^2)."
+  },
+  {
+    "id": 14,
+    "algorithm": "DFS",
+    "question": "Can DFS be used to generate a maze?",
+    "options": ["Yes, randomized DFS with backtracking creates perfect mazes", "No, DFS cannot backtrack", "Only for 2D circles", "Only if weights are negative"],
+    "answerIndex": 0,
+    "explanation": "Randomized DFS with backtracking generates perfect spanning tree mazes."
+  },
+  {
+    "id": 15,
+    "algorithm": "DFS",
+    "question": "How does DFS determine if an undirected graph contains a cycle?",
+    "options": ["Finding an edge to a visited node that is not the parent", "Counting edges > V", "Checking if stack is empty", "Finding a negative weight"],
+    "answerIndex": 0,
+    "explanation": "A back edge to an already-visited non-parent vertex proves a cycle."
+  },
+  {
+    "id": 16,
+    "algorithm": "DFS",
+    "question": "What is the low-link value low[u] in Tarjan's algorithm?",
+    "options": ["The lowest discovery time reachable from u via at most one back edge", "The lowest degree neighbor", "The shortest distance to root", "The index in adjacency list"],
+    "answerIndex": 0,
+    "explanation": "low[u] is the earliest visited vertex reachable from u's subtree via back edges."
+  },
+  {
+    "id": 17,
+    "algorithm": "DFS",
+    "question": "In bipartite graph checking via DFS, an odd-length cycle is detected when:",
+    "options": ["A neighbor already has the same color as the current node", "A node has degree 0", "All nodes are visited", "Edge weight is zero"],
+    "answerIndex": 0,
+    "explanation": "If an adjacent vertex has the identical color partition, the graph cannot be 2-colored."
+  },
+  {
+    "id": 18,
+    "algorithm": "DFS",
+    "question": "What is the space complexity of iterative DFS with an explicit Stack?",
+    "options": ["O(V)", "O(V^2)", "O(1)", "O(E * V)"],
+    "answerIndex": 0,
+    "explanation": "The explicit stack holds at most V vertices."
+  },
+  {
+    "id": 19,
+    "algorithm": "DFS",
+    "question": "Eulerian path existence in a directed graph requires DFS to check:",
+    "options": ["Connectivity of non-zero degree vertices and in-degree/out-degree balance", "Only cycle freedom", "Tree height <= 3", "All edge weights >= 0"],
+    "answerIndex": 0,
+    "explanation": "Eulerian paths require balanced degrees and a single connected component for active edges."
+  },
+  {
+    "id": 20,
+    "algorithm": "DFS",
+    "question": "When does DFS fail to find the shortest path in unweighted graphs?",
+    "options": ["Whenever there are alternate paths with varying hop counts", "Never", "Only when cycles exist", "Only when V > 100"],
+    "answerIndex": 0,
+    "explanation": "DFS plunges deep along the first branch encountered, potentially finding a convoluted long path."
+  }
+]

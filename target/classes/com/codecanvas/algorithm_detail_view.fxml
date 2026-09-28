@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.MediaView?>
+<?import com.codecanvas.visualizer.interactive.InteractiveCanvasPane?>
+
+<VBox spacing="14" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.codecanvas.controller.AlgorithmDetailController"
+      styleClass="detail-container">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+
+    <!-- Top Metadata Bar: Title, Tags, Actions (Figures 3 & 4) -->
+    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="card-panel">
+        <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="algoTitleLabel" text="Algorithm Title" styleClass="detail-title"/>
+                <Label fx:id="categoryBadgeLabel" text="Category" styleClass="badge-pill"/>
+            </HBox>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label fx:id="timeComplexityLabel" text="Time: O(V + E)" styleClass="complexity-tag"/>
+                <Label fx:id="spaceComplexityLabel" text="Space: O(V)" styleClass="complexity-tag"/>
+                <Label fx:id="actionFeedbackLabel" text="" styleClass="feedback-label"/>
+            </HBox>
+        </VBox>
+
+        <!-- Actions: Copy Code & Save Icon Buttons -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button fx:id="copyCodeBtn" text="📋 Copy Code" styleClass="secondary-btn" visible="false" managed="false"/>
+            <Button fx:id="saveBookmarkBtn" text="☆ Save" styleClass="primary-btn"/>
+        </HBox>
+    </HBox>
+
+    <!-- Navigation Bar: 5 DISTINCT CORE TABS PER TOPIC -->
+    <HBox spacing="6" alignment="CENTER_LEFT" styleClass="trigger-bar">
+        <ToggleButton fx:id="algoViewTrigger" text="[ Algorithm ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="codeViewTrigger" text="[ Code ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="videosViewTrigger" text="[ Videos ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="simulationViewTrigger" text="[ Simulation ]" styleClass="view-trigger-btn"/>
+        <ToggleButton fx:id="mcqViewTrigger" text="[ MCQ Quiz ]" styleClass="view-trigger-btn"/>
+    </HBox>
+
+    <!-- Dynamic Content Stack Pane -->
+    <StackPane fx:id="contentCardStack" VBox.vgrow="ALWAYS" styleClass="card-panel">
+        <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+
+        <!-- 1. [Algorithm] View (Figure 4) -->
+        <VBox fx:id="algorithmPane" spacing="10" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Algorithm Documentation (GitHub REST API Engine)" styleClass="section-title"/>
+                <ProgressIndicator fx:id="algoLoadingSpinner" prefWidth="18" prefHeight="18" visible="false"/>
+            </HBox>
+            <TextArea fx:id="algorithmMarkdownArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS" 
+                      styleClass="markdown-view"/>
+        </VBox>
+
+        <!-- 2. [Code] View (Figure 4) -->
+        <VBox fx:id="codePane" spacing="10" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Java Source Implementation (GitHub REST API Engine)" styleClass="section-title"/>
+                <ProgressIndicator fx:id="codeLoadingSpinner" prefWidth="18" prefHeight="18" visible="false"/>
+            </HBox>
+            <TextArea fx:id="codeEditorArea" editable="false" wrapText="false" VBox.vgrow="ALWAYS" 
+                      styleClass="code-view"/>
+        </VBox>
+
+        <!-- 3. [Videos] View (Formerly "Simulator") with MP4 Player Controls & Fallback -->
+        <VBox fx:id="videosPane" spacing="12" alignment="CENTER" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <!-- Video Found: Render MediaView with full playback controls -->
+            <VBox fx:id="mediaViewContainer" spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+                <StackPane styleClass="video-viewport" VBox.vgrow="ALWAYS">
+                    <MediaView fx:id="simulationMediaView" fitWidth="760" fitHeight="420" preserveRatio="true"/>
+                </StackPane>
+
+                <!-- Full Playback Controls Bar with Dynamic Play/Pause State Icon & Speed Selector -->
+                <HBox spacing="10" alignment="CENTER" styleClass="media-controls-bar">
+                    <Button fx:id="videoPlayPauseBtn" text="▶ Play" styleClass="media-btn"/>
+                    
+                    <Label text="Speed:" styleClass="subtle-label"/>
+                    <ComboBox fx:id="videoSpeedComboBox" prefWidth="85" styleClass="media-speed-box"/>
+
+                    <Separator orientation="VERTICAL"/>
+
+                    <Label text="Progress:" styleClass="subtle-label"/>
+                    <Slider fx:id="videoProgressSlider" HBox.hgrow="ALWAYS" min="0" max="100" value="0"/>
+                    <Label fx:id="videoTimeLabel" text="00:00 / 00:00" styleClass="time-label"/>
+
+                    <Separator orientation="VERTICAL"/>
+
+                    <Label text="🔊 Vol:" styleClass="subtle-label"/>
+                    <Slider fx:id="videoVolumeSlider" prefWidth="90" min="0" max="100" value="80"/>
+                </HBox>
+            </VBox>
+
+            <!-- Video Not Found Fallback (Exact requirement label: "Video not available") -->
+            <VBox fx:id="fallbackBox" spacing="12" alignment="CENTER" styleClass="fallback-panel" 
+                  visible="false" managed="false" VBox.vgrow="ALWAYS">
+                <Label text="⚠️" styleClass="warning-icon"/>
+                <Label fx:id="videoUnavailableLabel" text="Video not available" styleClass="fallback-title"/>
+                <Label fx:id="fallbackDetailLabel" text="" wrapText="true" textAlignment="CENTER" styleClass="fallback-msg"/>
+            </VBox>
+        </VBox>
+
+        <!-- 4. [Simulation] View: NEW Interactive VisuAlgo-style Canvas Engine -->
+        <VBox fx:id="simulationPane" spacing="10" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <!-- Top Toolbar for Interactive Simulation -->
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="sub-card">
+                <Button fx:id="toggleInputPanelBtn" text="⚙️ Custom Graph / Data Input" styleClass="secondary-btn"/>
+                <Separator fx:id="simToolbarSep1" orientation="VERTICAL"/>
+
+                <HBox fx:id="simPresetBox" spacing="6" alignment="CENTER_LEFT">
+                    <Label fx:id="simPresetLabel" text="Preset:" styleClass="form-label"/>
+                    <ComboBox fx:id="simPresetComboBox" prefWidth="120" styleClass="modern-choice-box"/>
+                </HBox>
+
+                <HBox fx:id="simSourceBox" spacing="6" alignment="CENTER_LEFT">
+                    <Label fx:id="simSourceLabel" text="Source Node:" styleClass="form-label"/>
+                    <ComboBox fx:id="simSourceComboBox" prefWidth="85" styleClass="modern-choice-box"/>
+                </HBox>
+
+                <!-- Search Target Input for Searching Algorithms (e.g. Binary Search) -->
+                <HBox fx:id="simTargetBox" spacing="6" alignment="CENTER_LEFT" visible="false" managed="false">
+                    <Label text="Target:" styleClass="form-label"/>
+                    <TextField fx:id="simTargetField" prefWidth="70" text="27" styleClass="form-input"/>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="simBuildRunBtn" text="⚡ Build &amp; Run" styleClass="accent-btn"/>
+            </HBox>
+
+            <!-- Embedded Collapsible Custom Graph / Data Input Panel -->
+            <VBox fx:id="simInputPanel" spacing="8" styleClass="input-drawer" visible="false" managed="false">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="simInputPanelTitle" text="Custom Graph / Array Structure Input" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="closeInputPanelBtn" text="✕ Close Drawer" styleClass="subtle-btn"/>
+                </HBox>
+
+                <!-- Input TextArea for custom structure (Edge List, Matrix, List, or Array) -->
+                <TextArea fx:id="simCustomInputArea" prefRowCount="4" wrapText="true" 
+                          promptText="Enter custom graph edge list (u v w) or array values (e.g. 29, 10, 14, 37...)"
+                          styleClass="code-view"/>
+
+                <!-- Graph-specific options box (hidden for array algorithms) -->
+                <HBox fx:id="graphOptionsBox" spacing="18" alignment="CENTER_LEFT" styleClass="options-box">
+                    <!-- Indexing Options -->
+                    <HBox fx:id="indexingBox" spacing="6" alignment="CENTER_LEFT">
+                        <Label text="Indexing:" styleClass="form-label"/>
+                        <RadioButton fx:id="zeroIndexedRadio" text="0-Indexed" selected="true" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="oneIndexedRadio" text="1-Indexed" styleClass="mcq-radio"/>
+                    </HBox>
+
+                    <Separator orientation="VERTICAL"/>
+
+                    <!-- Graph Input Type Options -->
+                    <HBox fx:id="inputFormatBox" spacing="6" alignment="CENTER_LEFT">
+                        <Label text="Input Format:" styleClass="form-label"/>
+                        <RadioButton fx:id="edgeListRadio" text="Edge List" selected="true" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="adjMatrixRadio" text="Adjacency Matrix" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="adjListRadio" text="Adjacency List" styleClass="mcq-radio"/>
+                    </HBox>
+
+                    <Separator orientation="VERTICAL"/>
+
+                    <!-- Output Graph Layout Options -->
+                    <HBox fx:id="outputLayoutBox" spacing="6" alignment="CENTER_LEFT">
+                        <Label text="Output Layout:" styleClass="form-label"/>
+                        <RadioButton fx:id="layoutDefaultRadio" text="Default" selected="true" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="layoutBipartiteRadio" text="Bipartite" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="layoutTreeRadio" text="Tree" styleClass="mcq-radio"/>
+                        <RadioButton fx:id="layoutDagRadio" text="DAG" styleClass="mcq-radio"/>
+                    </HBox>
+                </HBox>
+
+                <!-- Array-relevant Target Input Option Box for Binary Search -->
+                <HBox fx:id="arrayOptionsBox" spacing="10" alignment="CENTER_LEFT" styleClass="options-box" visible="false" managed="false">
+                    <Label text="Search Target:" styleClass="form-label"/>
+                    <TextField fx:id="simTargetDrawerField" prefWidth="80" text="27" styleClass="form-input"/>
+                    <Label text="(Numerical target value to search for in sorted array)" styleClass="subtle-label"/>
+                </HBox>
+            </VBox>
+
+            <!-- Prominent VisuAlgo Step Explanation Banner -->
+            <VBox fx:id="simStepCard" spacing="4" styleClass="visalgo-step-card">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="simStepTitleLabel" text="Step 1: Initialization" styleClass="visalgo-step-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="simAuxStructureLabel" text="Queue: []" styleClass="status-pill"/>
+                    <Label fx:id="simStepCounterLabel" text="Step 1 / 18" styleClass="badge-pill"/>
+                </HBox>
+                <Label fx:id="simStepExplanationLabel" text="Visualizing algorithm execution..." wrapText="true" styleClass="visalgo-step-desc"/>
+            </VBox>
+
+            <!-- Interactive Canvas Visualizer Component (Supports vector graph & array dragging) -->
+            <InteractiveCanvasPane fx:id="interactiveCanvasPane" VBox.vgrow="ALWAYS" minHeight="340"/>
+
+            <!-- VisuAlgo Animation Control Bar: Play, Pause, Step Forward, Step Back, Speed Slider, Reset -->
+            <HBox spacing="10" alignment="CENTER" styleClass="media-controls-bar">
+                <Button fx:id="simPlayPauseBtn" text="▶ Play" styleClass="media-btn"/>
+                <Button fx:id="simStepBackBtn" text="|◀ Step Back" styleClass="secondary-btn"/>
+                <Button fx:id="simStepForwardBtn" text="Step Forward ▶|" styleClass="secondary-btn"/>
+                <Button fx:id="simResetBtn" text="↺ Reset" styleClass="secondary-btn"/>
+
+                <Separator orientation="VERTICAL"/>
+
+                <Label text="Speed:" styleClass="subtle-label"/>
+                <Slider fx:id="simSpeedSlider" prefWidth="120" min="0.25" max="3.0" value="1.0"/>
+                <Label fx:id="simSpeedLabel" text="1.0x" styleClass="time-label"/>
+
+                <Separator orientation="VERTICAL"/>
+
+                <Label text="Timeline:" styleClass="subtle-label"/>
+                <Slider fx:id="simTimelineSlider" HBox.hgrow="ALWAYS" min="0" max="1" value="0"/>
+            </HBox>
+        </VBox>
+
+        <!-- 5. [MCQ Quiz] View: 20 Questions, Radio Choices, Prominent Verdict Card, Explanations -->
+        <VBox fx:id="mcqPane" spacing="12" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <!-- Header bar with Quiz actions and Score Status -->
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="sub-card">
+                <Label fx:id="mcqTopicTitleLabel" text="20-Question MCQ Assessment" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="mcqScoreBadge" text="Session: 0/20 | Total MCQs: 0 | Rank: Beginner" styleClass="status-pill"/>
+                <Button fx:id="retakeQuizBtn" text="↺ Reset / Retake" styleClass="secondary-btn" visible="false" managed="false"/>
+            </HBox>
+
+            <!-- PROMINENT SCORE VERDICT CARD (Displayed directly above questions upon Submit Quiz) -->
+            <VBox fx:id="scoreVerdictCard" spacing="6" styleClass="score-verdict-card" visible="false" managed="false">
+                <Label fx:id="scoreVerdictTitle" text="Quiz Results: 18 / 20 Correct (90%) - Level Progress Updated!" 
+                       styleClass="score-verdict-title"/>
+                <Label fx:id="scoreVerdictSubtitle" text="Performance summary and level promotion details..." 
+                       styleClass="score-verdict-subtitle"/>
+            </VBox>
+
+            <!-- Scrollable 20-Question List with RadioButton groups & Green/Red Feedback Containers -->
+            <ScrollPane fx:id="mcqScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane-clean">
+                <VBox fx:id="mcqQuestionsContainer" spacing="14">
+                    <padding><Insets top="4" right="10" bottom="16" left="4"/></padding>
+                    <!-- Questions will be dynamically populated here -->
+                </VBox>
+            </ScrollPane>
+
+            <!-- Bottom Submit Button -->
+            <HBox alignment="CENTER_RIGHT" spacing="12">
+                <Label text="Answer all 20 questions and click Submit Quiz to evaluate your mastery." styleClass="subtle-label"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="submitQuizBottomBtn" text="✔ Submit Quiz" styleClass="primary-btn"/>
+            </HBox>
+        </VBox>
+
+    </StackPane>
+</VBox>

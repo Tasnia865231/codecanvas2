@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fx:id="profileScrollRoot" fitToWidth="true" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.codecanvas.controller.ProfileController"
+            styleClass="scroll-pane-clean">
+    <VBox spacing="16" styleClass="profile-container">
+        <padding><Insets top="14" right="18" bottom="20" left="18"/></padding>
+
+        <!-- Role-Based Access Control Mode Banner -->
+        <Label fx:id="rbacModeBanner" text="Role Mode Status" styleClass="rbac-banner" maxWidth="Infinity"/>
+
+        <!-- Figure 5: User Profile Header Card -->
+        <HBox spacing="18" alignment="CENTER_LEFT" styleClass="card-panel">
+            <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+            <!-- Avatar & FileChooser Controls (Dynamic window width bound scaling) -->
+            <VBox spacing="8" alignment="CENTER">
+                <ImageView fx:id="profileImageView" fitWidth="110" fitHeight="110" preserveRatio="true" 
+                           styleClass="avatar-image-view"/>
+                <HBox spacing="6">
+                    <Button fx:id="browseImageBtn" text="Browse..." styleClass="secondary-btn" onAction="#onBrowseImage"/>
+                    <Button fx:id="resetImageBtn" text="Reset" styleClass="secondary-btn" onAction="#onResetImage"/>
+                </HBox>
+            </VBox>
+
+            <!-- User Information Display -->
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="usernameDisplayLabel" text="Student Name" styleClass="detail-title"/>
+                    <Label fx:id="userRoleBadgeLabel" text="STUDENT" styleClass="badge-pill"/>
+                    <Label fx:id="userRankBadgeLabel" text="Rank: Beginner" styleClass="status-pill"/>
+                </HBox>
+                <Label fx:id="userScoreSummaryLabel" text="Correct MCQs: 0 | Total Score: 0 pts" styleClass="subtle-label"/>
+                <Label fx:id="profileSaveStatusLabel" text="" styleClass="feedback-label"/>
+            </VBox>
+
+            <!-- Navigation to Saved Hub & Save Profile -->
+            <VBox spacing="8" alignment="CENTER_RIGHT">
+                <Button fx:id="openSavedHubBtn" text="★ Saved Bookmarks Hub →" styleClass="accent-btn"/>
+                <Button fx:id="saveProfileChangesBtn" text="Save Profile Changes" styleClass="primary-btn" 
+                        onAction="#onSaveProfileChanges"/>
+            </VBox>
+        </HBox>
+
+        <!-- Navigation Tabs: Student Database (RBAC), Peer Directory (Inspection), & Course Lab -->
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="course-tab-pane">
+            
+            <!-- TAB 1: Student Database (RBAC Admin Mode vs. Student Mode) -->
+            <Tab text="Student Database (TableView &amp; RBAC)">
+                <VBox spacing="12" styleClass="tab-inner-box">
+                    <padding><Insets top="14" right="16" bottom="16" left="16"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Course Students (SQLite-backed PersonDao)" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="studentModeNoticeLabel" text="" styleClass="warning-pill" visible="false" managed="false"/>
+                    </HBox>
+
+                    <TableView fx:id="personTable" prefHeight="190" styleClass="modern-table">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="Student ID" prefWidth="90"/>
+                            <TableColumn fx:id="nameColumn" text="Student Name" prefWidth="220"/>
+                            <TableColumn fx:id="levelColumn" text="Skill Level" prefWidth="140"/>
+                            <TableColumn fx:id="dobColumn" text="Date of Birth" prefWidth="160"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+
+                    <!-- Admin Form: Only Visible & Managed for Admin123_ -->
+                    <HBox fx:id="adminPersonFormBox" spacing="10" alignment="CENTER_LEFT" styleClass="admin-form-panel">
+                        <TextField fx:id="personNameField" promptText="Student Full Name" prefWidth="190" styleClass="form-input"/>
+                        <ChoiceBox fx:id="personLevelChoiceBox" prefWidth="130"/>
+                        <DatePicker fx:id="personDobPicker" promptText="Date of Birth" prefWidth="140"/>
+                        <Button fx:id="addPersonBtn" text="Add Student" styleClass="primary-btn" onAction="#onAddPerson"/>
+                        <Button fx:id="updatePersonBtn" text="Update" styleClass="secondary-btn" onAction="#onUpdatePerson"/>
+                        <Button fx:id="deletePersonBtn" text="Delete" styleClass="danger-btn" onAction="#onDeletePerson"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- TAB 2: Class Peer Directory (Student Inspection of Peer Progress) -->
+            <Tab text="Class Peer Directory (Student Inspection)">
+                <SplitPane dividerPositions="0.35" styleClass="tab-inner-box">
+                    <!-- Left: Peers list -->
+                    <VBox spacing="8" styleClass="sidebar-panel">
+                        <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                        <Label text="Registered Peers" styleClass="section-title"/>
+                        <ListView fx:id="peerListView" VBox.vgrow="ALWAYS" styleClass="peer-list-view"/>
+                    </VBox>
+
+                    <!-- Right: Read-Only Peer Progress Card -->
+                    <VBox spacing="14" styleClass="table-panel">
+                        <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label fx:id="peerNameLabel" text="Select a peer" styleClass="detail-title"/>
+                            <Label fx:id="peerRoleBadge" text="STUDENT" styleClass="badge-pill"/>
+                            <Label fx:id="peerRankBadge" text="Rank: Beginner" styleClass="status-pill"/>
+                        </HBox>
+
+                        <GridPane hgap="16" vgap="12" styleClass="peer-stats-grid">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="50"/>
+                            </columnConstraints>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="Total Correct MCQs:" styleClass="subtle-label"/>
+                                <Label fx:id="peerMcqScoreLabel" text="0 correct (0 pts)" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="Saved Algorithm Bookmarks:" styleClass="subtle-label"/>
+                                <Label fx:id="peerSavedCountLabel" text="0 saved item(s)" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label text="University Email:" styleClass="subtle-label"/>
+                                <Label fx:id="peerEmailLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label text="Country / Region:" styleClass="subtle-label"/>
+                                <Label fx:id="peerCountryLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+
+                            <VBox spacing="4" styleClass="sub-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                <Label text="Hobbies &amp; Interests:" styleClass="subtle-label"/>
+                                <Label fx:id="peerHobbiesLabel" text="-" styleClass="card-heading"/>
+                            </VBox>
+                        </GridPane>
+
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Label text="ℹ️ Read-Only Inspection: Students cannot modify peer accounts or scores." styleClass="subtle-label"/>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+
+            <!-- TAB 3: Interactive UI Controls Lab (Course UI Components Matrix) -->
+            <Tab text="Integrated UI Controls Lab">
+                <GridPane hgap="16" vgap="16" styleClass="tab-inner-box">
+                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- RadioButton & ToggleGroup: Skill Level Selector -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Skill Level (RadioButton &amp; ToggleGroup)" styleClass="card-heading"/>
+                        <HBox spacing="14" alignment="CENTER_LEFT">
+                            <RadioButton fx:id="beginnerRadio" text="Beginner" selected="true"/>
+                            <RadioButton fx:id="intermediateRadio" text="Intermediate"/>
+                            <RadioButton fx:id="expertRadio" text="Expert"/>
+                        </HBox>
+                        <Label fx:id="skillLevelLabel" text="Skill Level: Beginner" styleClass="status-pill"/>
+                    </VBox>
+
+                    <!-- CheckBox: Hobbies Selector -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Hobbies (CheckBox Selector)" styleClass="card-heading"/>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="readingCheck" text="Reading"/>
+                            <CheckBox fx:id="gamingCheck" text="Gaming"/>
+                            <CheckBox fx:id="travelingCheck" text="Traveling"/>
+                            <Button fx:id="submitHobbiesBtn" text="Submit" styleClass="secondary-btn"/>
+                        </HBox>
+                        <Label fx:id="hobbiesLabel" text="Selected Hobbies: None" styleClass="status-pill"/>
+                    </VBox>
+
+                    <!-- ChoiceBox Theme & ComboBox Country -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Theme (ChoiceBox) &amp; Country (ComboBox)" styleClass="card-heading"/>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <VBox spacing="4">
+                                <Label text="App Theme:" styleClass="subtle-label"/>
+                                <ChoiceBox fx:id="themeChoiceBox" prefWidth="120"/>
+                            </VBox>
+                            <VBox spacing="4">
+                                <Label text="Country:" styleClass="subtle-label"/>
+                                <ComboBox fx:id="countryComboBox" prefWidth="160"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- DatePicker (dd-MMM-yyyy) & ColorPicker -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="DatePicker &amp; ColorPicker" styleClass="card-heading"/>
+                        <HBox spacing="14" alignment="CENTER_LEFT">
+                            <VBox spacing="4">
+                                <DatePicker fx:id="dobPicker" prefWidth="140"/>
+                                <Label fx:id="dobLabel" text="Formatted DOB: -" styleClass="subtle-label"/>
+                            </VBox>
+                            <VBox spacing="4">
+                                <ColorPicker fx:id="labelColorPicker"/>
+                                <Label fx:id="colorTargetLabel" text="Sample Colorized Text" styleClass="card-heading"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ProgressBar + TextField: Accumulator -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label text="Accumulator (ProgressBar + TextField)" styleClass="card-heading"/>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <TextField fx:id="accumulateInputField" promptText="Target N" prefWidth="100" styleClass="form-input"/>
+                            <Button fx:id="accumulateButton" text="Accumulate" styleClass="primary-btn"/>
+                        </HBox>
+                        <ProgressBar fx:id="accumulateProgressBar" progress="0" maxWidth="Infinity"/>
+                        <Label fx:id="accumulateStatusLabel" text="Progress: 0 / N" styleClass="subtle-label"/>
+                    </VBox>
+
+                    <!-- Slider (Font Size) & Spinner (Quantity) -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Slider &amp; Numeric Spinner" styleClass="card-heading"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Slider fx:id="fontSizeSlider" prefWidth="140"/>
+                            <Label fx:id="sliderTargetLabel" text="Font Preview (14pt)">
+                                <font><Font size="14"/></font>
+                            </Label>
+                        </HBox>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Spinner fx:id="quantitySpinner" prefWidth="80"/>
+                            <Button fx:id="showQuantityBtn" text="Show Quantity" styleClass="secondary-btn"/>
+                            <Label fx:id="quantityLabel" text="Selected Quantity: 3" styleClass="status-pill"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ListView & TreeView -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <Label text="Item Selection (ListView &amp; TreeView)" styleClass="card-heading"/>
+                        <HBox spacing="10">
+                            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                <ListView fx:id="algoListView" prefHeight="110"/>
+                                <Label fx:id="algoSelectionLabel" text="Selected List Item: -" styleClass="subtle-label"/>
+                            </VBox>
+                            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                <TreeView fx:id="categoryTreeView" prefHeight="110"/>
+                                <Label fx:id="treeSelectionLabel" text="Tree Node: -" styleClass="subtle-label"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- TextArea & PasswordField Toggle & Alert Dialogs -->
+                    <VBox spacing="8" styleClass="sub-card" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label text="TextArea, PasswordField &amp; Alerts" styleClass="card-heading"/>
+                        <HBox spacing="8">
+                            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                <TextArea fx:id="notesTextArea" promptText="Enter notes..." prefRowCount="3" wrapText="true"/>
+                                <Button fx:id="clearNotesBtn" text="Clear Notes" styleClass="secondary-btn"/>
+                            </VBox>
+                            <VBox spacing="4" prefWidth="160">
+                                <StackPane>
+                                    <PasswordField fx:id="profilePasswordField" promptText="Secret Key"/>
+                                    <TextField fx:id="profilePasswordVisibleField" promptText="Secret Key" visible="false" managed="false"/>
+                                </StackPane>
+                                <Button fx:id="togglePasswordBtn" text="Show" styleClass="secondary-btn"/>
+                                <Separator/>
+                                <Label text="Dialog Triggers:" styleClass="subtle-label"/>
+                                <HBox spacing="4">
+                                    <Button fx:id="infoAlertBtn" text="Info" styleClass="secondary-btn"/>
+                                    <Button fx:id="warningAlertBtn" text="Warn" styleClass="secondary-btn"/>
+                                    <Button fx:id="errorAlertBtn" text="Err" styleClass="danger-btn"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                </GridPane>
+            </Tab>
+
+        </TabPane>
+    </VBox>
+</ScrollPane>

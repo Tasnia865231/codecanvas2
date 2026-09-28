@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Floyd-Warshall",
+    "question": "What type of shortest path problem does Floyd-Warshall solve?",
+    "options": ["All-Pairs Shortest Path (APSP)", "Single-Source Shortest Path (SSSP)", "Single-Pair Shortest Path", "Longest Common Subsequence"],
+    "answerIndex": 0,
+    "explanation": "Floyd-Warshall computes shortest paths between every pair of vertices in a weighted graph."
+  },
+  {
+    "id": 2,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the time complexity of the Floyd-Warshall algorithm?",
+    "options": ["O(V^3)", "O(V^2)", "O(V * E)", "O(E log V)"],
+    "answerIndex": 0,
+    "explanation": "Three nested loops from 1 to V yield O(V^3) time complexity."
+  },
+  {
+    "id": 3,
+    "algorithm": "Floyd-Warshall",
+    "question": "What algorithmic paradigm does Floyd-Warshall utilize?",
+    "options": ["Dynamic Programming", "Greedy Algorithm", "Divide and Conquer", "Backtracking"],
+    "answerIndex": 0,
+    "explanation": "It defines dist[i][j][k] as shortest path using intermediate vertices from {1..k}."
+  },
+  {
+    "id": 4,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the space complexity of standard Floyd-Warshall?",
+    "options": ["O(V^2)", "O(V^3)", "O(V)", "O(1)"],
+    "answerIndex": 0,
+    "explanation": "The distance matrix dist[i][j] requires V x V = O(V^2) memory."
+  },
+  {
+    "id": 5,
+    "algorithm": "Floyd-Warshall",
+    "question": "How does Floyd-Warshall detect negative weight cycles?",
+    "options": ["If any diagonal entry dist[i][i] becomes negative", "If any off-diagonal entry is zero", "If execution takes > 1 second", "If all entries are negative"],
+    "answerIndex": 0,
+    "explanation": "A negative value on the main diagonal dist[i][i] < 0 indicates a path from i back to i with negative cost."
+  },
+  {
+    "id": 6,
+    "algorithm": "Floyd-Warshall",
+    "question": "In the recurrence dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]), what does k represent?",
+    "options": ["The candidate intermediate vertex being evaluated", "The number of edges", "The recursion depth", "The source node"],
+    "answerIndex": 0,
+    "explanation": "k is the intermediate vertex through which paths from i to j are relaxed."
+  },
+  {
+    "id": 7,
+    "algorithm": "Floyd-Warshall",
+    "question": "Can Floyd-Warshall operate on graphs with negative edge weights (provided no negative cycles exist)?",
+    "options": ["Yes, it correctly calculates shortest paths with negative weights", "No, all weights must be positive", "Only for trees", "Only if undirected"],
+    "answerIndex": 0,
+    "explanation": "Floyd-Warshall seamlessly handles negative edge weights as long as no negative cycle is reachable."
+  },
+  {
+    "id": 8,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the transitive closure of a directed graph computable by Warshall's variant?",
+    "options": ["Reachability matrix indicating whether a path exists between any two vertices", "Spanning tree", "MST weight", "Topological order"],
+    "answerIndex": 0,
+    "explanation": "Warshall's algorithm uses boolean OR/AND operations to determine pairwise reachability."
+  },
+  {
+    "id": 9,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the initial value of dist[i][i] in Floyd-Warshall?",
+    "options": ["0", "Infinity", "-1", "1"],
+    "answerIndex": 0,
+    "explanation": "The distance from any vertex to itself is initially 0."
+  },
+  {
+    "id": 10,
+    "algorithm": "Floyd-Warshall",
+    "question": "For dense graphs where E ≈ V^2, how does Floyd-Warshall compare to running Dijkstra V times?",
+    "options": ["Floyd-Warshall O(V^3) has simpler loops and better cache locality than V * O(V^2 log V)", "Floyd-Warshall is 100x slower", "Dijkstra is always superior", "Floyd-Warshall cannot run on dense graphs"],
+    "answerIndex": 0,
+    "explanation": "On dense graphs, Floyd-Warshall's tight 3-loop structure offers excellent performance and cache locality."
+  },
+  {
+    "id": 11,
+    "algorithm": "Floyd-Warshall",
+    "question": "How are paths reconstructed in Floyd-Warshall?",
+    "options": ["Using a predecessor matrix next[i][j] storing the intermediate vertex", "By re-running BFS", "Looking up hash tables", "Inverting matrix"],
+    "answerIndex": 0,
+    "explanation": "A predecessor matrix next[i][j] enables reconstructing the exact sequence of vertices."
+  },
+  {
+    "id": 12,
+    "algorithm": "Floyd-Warshall",
+    "question": "What happens if dist[i][k] is Infinity in the inner loop?",
+    "options": ["The relaxation through k can be skipped because no path exists from i to k", "Throws NullPointerException", "Distance becomes negative", "Terminates the program"],
+    "answerIndex": 0,
+    "explanation": "If dist[i][k] == INF, there is no route through k, so the inner relaxation is skipped."
+  },
+  {
+    "id": 13,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the order of loops in standard Floyd-Warshall?",
+    "options": ["k (intermediate) must be the outermost loop", "i (source) must be outermost", "j (target) must be outermost", "Loop order does not matter"],
+    "answerIndex": 0,
+    "explanation": "k must be outermost to ensure subproblems for intermediate vertices 1..k-1 are fully computed."
+  },
+  {
+    "id": 14,
+    "algorithm": "Floyd-Warshall",
+    "question": "Can Floyd-Warshall be used to find the graph diameter?",
+    "options": ["Yes, by finding the maximum value in the final distance matrix", "No", "Only for DAGs", "Only if V < 5"],
+    "answerIndex": 0,
+    "explanation": "The graph diameter is the maximum shortest distance between any pair of connected vertices."
+  },
+  {
+    "id": 15,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the graph center computable using Floyd-Warshall?",
+    "options": ["The vertex with the minimum eccentricity (maximum distance to any other node)", "The node with ID 0", "The vertex with highest degree", "The centroid of weights"],
+    "answerIndex": 0,
+    "explanation": "The center minimizes the maximum shortest distance to any other vertex."
+  },
+  {
+    "id": 16,
+    "algorithm": "Floyd-Warshall",
+    "question": "If two nodes i and j have no path between them, what is dist[i][j]?",
+    "options": ["Infinity (or a sentinel INF value like 1e9)", "0", "-1", "NaN"],
+    "answerIndex": 0,
+    "explanation": "Unconnected pairs remain at the sentinel INF value."
+  },
+  {
+    "id": 17,
+    "algorithm": "Floyd-Warshall",
+    "question": "Does Floyd-Warshall work on graphs with directed edges?",
+    "options": ["Yes, it works identically on directed and undirected graphs", "No, only undirected", "Only bipartite graphs", "Only trees"],
+    "answerIndex": 0,
+    "explanation": "Adjacency matrices natively represent directed edges dist[u][v] != dist[v][u]."
+  },
+  {
+    "id": 18,
+    "algorithm": "Floyd-Warshall",
+    "question": "What is the bitwise version of Warshall's algorithm known as?",
+    "options": ["Bitset transitive closure optimization using word-level parallelism", "BitSort", "Huffman coding", "RSA"],
+    "answerIndex": 0,
+    "explanation": "Bitsets accelerate Warshall's reachability algorithm by 64x using 64-bit word bitwise OR operations."
+  },
+  {
+    "id": 19,
+    "algorithm": "Floyd-Warshall",
+    "question": "Can Floyd-Warshall find the widest path (maximum bottleneck capacity)?",
+    "options": ["Yes, by replacing min with max and + with min", "No", "Only on trees", "Only with unit weights"],
+    "answerIndex": 0,
+    "explanation": "Modifying the semi-ring algebra allows computing maximum bottleneck capacity paths."
+  },
+  {
+    "id": 20,
+    "algorithm": "Floyd-Warshall",
+    "question": "What happens if a negative cycle exists between vertices reachable from i to j?",
+    "options": ["dist[i][j] can become arbitrarily negative or -INF", "The program crashes", "Output is 0", "Matrix is cleared"],
+    "answerIndex": 0,
+    "explanation": "Shortest path cost between those vertices decreases without bound."
+  }
+]

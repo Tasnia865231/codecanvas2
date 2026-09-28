@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Dijkstra",
+    "question": "What is Dijkstra's algorithm used for?",
+    "options": ["All-pairs shortest paths with negative cycles", "Single-source shortest path with non-negative edge weights", "Minimum spanning tree on unweighted graphs", "Maximum flow"],
+    "answerIndex": 1,
+    "explanation": "Dijkstra computes single-source shortest paths on graphs with non-negative weights."
+  },
+  {
+    "id": 2,
+    "algorithm": "Dijkstra",
+    "question": "What is the time complexity of Dijkstra using a Min-Indexed Binary Heap?",
+    "options": ["O(V^2)", "O((V + E) log V)", "O(V * E)", "O(V^3)"],
+    "answerIndex": 1,
+    "explanation": "Extract-min takes O(log V) and edge relaxations take O(log V) per edge, totaling O((V + E) log V)."
+  },
+  {
+    "id": 3,
+    "algorithm": "Dijkstra",
+    "question": "Why does standard Dijkstra fail on graphs with negative edge weights?",
+    "options": ["It enters an infinite loop", "Greedy assumption breaks because a settled node's distance could be decreased later", "Throws ArithmeticException", "Priority queue underflows"],
+    "answerIndex": 1,
+    "explanation": "Dijkstra marks vertices as finalized once extracted; negative edges can invalidate that finalized distance."
+  },
+  {
+    "id": 4,
+    "algorithm": "Dijkstra",
+    "question": "What happens if all edge weights in a graph are equal to 1?",
+    "options": ["Dijkstra runs in O(1)", "Dijkstra behaves equivalently to standard BFS", "Dijkstra fails", "Priority queue is unnecessary"],
+    "answerIndex": 1,
+    "explanation": "When all weights are uniform positive values, Dijkstra's priority queue behaves like a FIFO queue (BFS)."
+  },
+  {
+    "id": 5,
+    "algorithm": "Dijkstra",
+    "question": "Which data structure achieves Dijkstra's theoretical lower bound of O(E + V log V)?",
+    "options": ["Binary Heap", "Fibonacci Heap", "Linked List", "AVL Tree"],
+    "answerIndex": 1,
+    "explanation": "Fibonacci Heap offers O(1) amortized decrease-key operations."
+  },
+  {
+    "id": 6,
+    "algorithm": "Dijkstra",
+    "question": "What is edge relaxation in Dijkstra's algorithm?",
+    "options": ["Decreasing edge weight", "Updating dist[v] to dist[u] + weight(u, v) if it offers a shorter path", "Removing an edge from the graph", "Inverting edge direction"],
+    "answerIndex": 1,
+    "explanation": "Relaxation checks if traveling through u yields a strictly shorter route to neighbor v."
+  },
+  {
+    "id": 7,
+    "algorithm": "Dijkstra",
+    "question": "What is the space complexity of Dijkstra's algorithm?",
+    "options": ["O(1)", "O(V)", "O(V^2)", "O(E * V)"],
+    "answerIndex": 1,
+    "explanation": "Distance array, visited set, and priority queue consume O(V) space."
+  },
+  {
+    "id": 8,
+    "algorithm": "Dijkstra",
+    "question": "Can Dijkstra be used on Directed Acyclic Graphs (DAGs)?",
+    "options": ["Yes, though topological sort relaxation is faster O(V + E)", "No, Dijkstra only works on undirected graphs", "Only if weights are negative", "Never"],
+    "answerIndex": 0,
+    "explanation": "Dijkstra works on DAGs with non-negative weights, but topological sort can solve DAG shortest paths in linear time."
+  },
+  {
+    "id": 9,
+    "algorithm": "Dijkstra",
+    "question": "What is the initial distance assigned to the source vertex in Dijkstra?",
+    "options": ["0", "1", "Infinity", "-1"],
+    "answerIndex": 0,
+    "explanation": "Distance to the source vertex is 0, while all other vertices begin at infinity."
+  },
+  {
+    "id": 10,
+    "algorithm": "Dijkstra",
+    "question": "Which algorithmic paradigm does Dijkstra's algorithm employ?",
+    "options": ["Dynamic Programming", "Greedy Paradigm", "Backtracking", "Divide and Conquer"],
+    "answerIndex": 1,
+    "explanation": "Dijkstra greedily chooses the unvisited vertex with the minimum tentative distance at each step."
+  },
+  {
+    "id": 11,
+    "algorithm": "Dijkstra",
+    "question": "Can Dijkstra find the shortest path from single source to a single target?",
+    "options": ["Yes, terminate early as soon as the target vertex is extracted from the priority queue", "No, it must always visit all vertices in the graph", "Only if graph is planar", "Only if V < 10"],
+    "answerIndex": 0,
+    "explanation": "Once the target vertex is popped from the min-heap, its shortest path is guaranteed settled."
+  },
+  {
+    "id": 12,
+    "algorithm": "Dijkstra",
+    "question": "What is A* Search in relation to Dijkstra?",
+    "options": ["Dijkstra with a heuristic function h(n) biasing exploration toward the goal", "Unrelated sorting algorithm", "BFS with recursion", "Dijkstra with negative cycles"],
+    "answerIndex": 0,
+    "explanation": "A* generalizes Dijkstra by incorporating an admissible heuristic estimate h(n)."
+  },
+  {
+    "id": 13,
+    "algorithm": "Dijkstra",
+    "question": "If a graph has negative edge weights but NO negative cycles, can Dijkstra be fixed simply by adding a constant C to all edges?",
+    "options": ["Yes, adding C makes all edges positive and preserves paths", "No, paths with more edges are unfairly penalized by C * k", "Yes, this is Johnson's technique", "Only if C > 100"],
+    "answerIndex": 1,
+    "explanation": "Adding a constant adds k*C to a k-edge path, skewing preferences toward fewer edges rather than lower original sum."
+  },
+  {
+    "id": 14,
+    "algorithm": "Dijkstra",
+    "question": "What is the time complexity of Dijkstra implemented with an unsorted array?",
+    "options": ["O(V^2)", "O(V + E)", "O(E log V)", "O(log V)"],
+    "answerIndex": 0,
+    "explanation": "Finding the minimum takes O(V) per step across V steps, yielding O(V^2), optimal for dense graphs where E ≈ V^2."
+  },
+  {
+    "id": 15,
+    "algorithm": "Dijkstra",
+    "question": "How are paths reconstructed after running Dijkstra?",
+    "options": ["By following parent pointers backwards from target to source", "Running BFS on the distance array", "Multiplying distances", "Re-sorting edges"],
+    "answerIndex": 0,
+    "explanation": "Storing parent[v] = u during relaxation allows linear-time path backtracking."
+  },
+  {
+    "id": 16,
+    "algorithm": "Dijkstra",
+    "question": "In a graph with V vertices and 0 edges, what does Dijkstra return for unreachable nodes?",
+    "options": ["0", "Integer.MAX_VALUE (Infinity)", "-1", "Throws an Exception"],
+    "answerIndex": 1,
+    "explanation": "Unreachable nodes retain their initial tentative distance of Infinity."
+  },
+  {
+    "id": 17,
+    "algorithm": "Dijkstra",
+    "question": "Can Dijkstra handle self-loops with positive weight?",
+    "options": ["Yes, they are ignored because dist[u] + weight > dist[u]", "No, it enters an infinite loop", "Only if self-loop weight is 0", "Throws error"],
+    "answerIndex": 0,
+    "explanation": "Positive self-loops cannot reduce the distance to u, so relaxation naturally skips them."
+  },
+  {
+    "id": 18,
+    "algorithm": "Dijkstra",
+    "question": "What happens if Dijkstra is executed on an undirected graph?",
+    "options": ["It works seamlessly, treating each undirected edge as two symmetric directed edges", "It fails due to cycles", "It requires negative cycle checks", "Only works if tree"],
+    "answerIndex": 0,
+    "explanation": "Undirected edges (u, v, w) are represented as two opposing directed edges with non-negative weight w."
+  },
+  {
+    "id": 19,
+    "algorithm": "Dijkstra",
+    "question": "What is the maximum number of times any vertex is popped from the Priority Queue in standard indexed Dijkstra?",
+    "options": ["Once", "Twice", "V times", "Degree of the vertex"],
+    "answerIndex": 0,
+    "explanation": "Each vertex is marked finalized upon its first extraction from the priority queue."
+  },
+  {
+    "id": 20,
+    "algorithm": "Dijkstra",
+    "question": "Which algorithm is a predecessor to Dijkstra for unweighted single-source shortest path?",
+    "options": ["Breadth-First Search (BFS)", "Depth-First Search (DFS)", "QuickSort", "Kruskal's"],
+    "answerIndex": 0,
+    "explanation": "BFS is the unweighted unit-cost specialization of Dijkstra's algorithm."
+  }
+]

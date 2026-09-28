@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Binary Search",
+    "question": "What prerequisite must be satisfied before applying standard Binary Search on an array?",
+    "options": ["The array elements must be sorted", "The array must contain unique elements only", "The array size must be a power of 2", "The array must be stored in a linked list"],
+    "answerIndex": 0,
+    "explanation": "Binary search relies on monotonicity; elements must be arranged in sorted order."
+  },
+  {
+    "id": 2,
+    "algorithm": "Binary Search",
+    "question": "What is the worst-case time complexity of Binary Search on a sorted array of size N?",
+    "options": ["O(1)", "O(log N)", "O(N)", "O(N log N)"],
+    "answerIndex": 1,
+    "explanation": "Each comparison cuts the search interval in half, leading to log2(N) steps in the worst case."
+  },
+  {
+    "id": 3,
+    "algorithm": "Binary Search",
+    "question": "What is the best-case time complexity of Binary Search?",
+    "options": ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
+    "answerIndex": 0,
+    "explanation": "If the target is located at the initial middle index, Binary Search finishes in O(1)."
+  },
+  {
+    "id": 4,
+    "algorithm": "Binary Search",
+    "question": "What is the auxiliary space complexity of iterative Binary Search?",
+    "options": ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
+    "answerIndex": 0,
+    "explanation": "Iterative binary search uses only two pointer variables (low, high), requiring constant O(1) extra space."
+  },
+  {
+    "id": 5,
+    "algorithm": "Binary Search",
+    "question": "Why is 'int mid = low + (high - low) / 2' preferred over 'int mid = (low + high) / 2'?",
+    "options": ["It prevents 32-bit signed integer overflow when low + high exceeds Integer.MAX_VALUE", "It runs 2x faster", "It works for floats", "It avoids division by zero"],
+    "answerIndex": 0,
+    "explanation": "When low + high > 2^31 - 1, integer addition wraps to negative numbers; low + (high - low) / 2 prevents overflow."
+  },
+  {
+    "id": 6,
+    "algorithm": "Binary Search",
+    "question": "What design paradigm does Binary Search employ?",
+    "options": ["Divide and Conquer (Decrease and Conquer)", "Greedy Paradigm", "Dynamic Programming", "Backtracking"],
+    "answerIndex": 0,
+    "explanation": "Binary search eliminates half the remaining elements per iteration, implementing decrease-by-constant-factor."
+  },
+  {
+    "id": 7,
+    "algorithm": "Binary Search",
+    "question": "What does Java's Arrays.binarySearch() return if the key is NOT found?",
+    "options": ["-(insertion point) - 1", "-1", "Integer.MIN_VALUE", "Throws NoSuchElementException"],
+    "answerIndex": 0,
+    "explanation": "Java encodes the insertion position into the negative return value: -(insertion point) - 1."
+  },
+  {
+    "id": 8,
+    "algorithm": "Binary Search",
+    "question": "What is Binary Search on Answer (Bisection method)?",
+    "options": ["Using binary search on a monotonic predicate over a feasible solution space", "Searching without numbers", "Finding letters", "Hardware search"],
+    "answerIndex": 0,
+    "explanation": "When a condition f(x) is monotonic (false...false, true...true), binary search finds the boundary in logarithmic steps."
+  },
+  {
+    "id": 9,
+    "algorithm": "Binary Search",
+    "question": "Can Binary Search achieve O(log N) on a standard singly linked list?",
+    "options": ["No, because traversing to the middle element takes O(N) linear time", "Yes, always", "Only if sorted descending", "Only with 2 heads"],
+    "answerIndex": 0,
+    "explanation": "Linked lists lack O(1) random index access; finding the middle node requires O(N) traversal."
+  },
+  {
+    "id": 10,
+    "algorithm": "Binary Search",
+    "question": "What data structure provides logarithmic search on linked pointers?",
+    "options": ["Skip List (or Binary Search Tree)", "Array", "Stack", "FIFO Queue"],
+    "answerIndex": 0,
+    "explanation": "Skip Lists and BSTs add multi-level pointer bypasses to achieve O(log N) search on pointer structures."
+  },
+  {
+    "id": 11,
+    "algorithm": "Binary Search",
+    "question": "What is the maximum number of comparisons for N = 1,000,000 in Binary Search?",
+    "options": ["Around 20 comparisons", "1,000 comparisons", "500,000 comparisons", "1 comparison"],
+    "answerIndex": 0,
+    "explanation": "log2(1,000,000) is approximately 19.93, requiring at most 20 comparisons."
+  },
+  {
+    "id": 12,
+    "algorithm": "Binary Search",
+    "question": "How does Lower Bound binary search differ from standard binary search?",
+    "options": ["It finds the first element that is >= target", "It finds the maximum element", "It searches backwards", "It starts from index 0"],
+    "answerIndex": 0,
+    "explanation": "Lower bound returns the index of the first value not less than target."
+  },
+  {
+    "id": 13,
+    "algorithm": "Binary Search",
+    "question": "What is Upper Bound binary search?",
+    "options": ["Finds the first element that is strictly > target", "Finds the last element of the array", "Searches only the right half", "Returns array length"],
+    "answerIndex": 0,
+    "explanation": "Upper bound returns the index of the first value strictly greater than the target."
+  },
+  {
+    "id": 14,
+    "algorithm": "Binary Search",
+    "question": "How many comparisons does Binary Search perform in an array of size 1?",
+    "options": ["1 comparison", "0 comparisons", "2 comparisons", "Undefined"],
+    "answerIndex": 0,
+    "explanation": "For N = 1, exactly one comparison inspects the single element."
+  },
+  {
+    "id": 15,
+    "algorithm": "Binary Search",
+    "question": "What is Exponential Search?",
+    "options": ["Finds range [2^(k-1), 2^k] where key resides, then applies Binary Search", "Calculates powers of 2", "Searches exponentially slow", "Matrix search"],
+    "answerIndex": 0,
+    "explanation": "Exponential search doubles bound indices (1, 2, 4, 8...) then applies binary search in O(log i) time."
+  },
+  {
+    "id": 16,
+    "algorithm": "Binary Search",
+    "question": "Can Binary Search find the peak element in an unsorted array where arr[i] != arr[i+1]?",
+    "options": ["Yes, by moving toward the strictly greater neighbor in O(log N) time", "No, array must be sorted", "Only if array is monotonic", "Never"],
+    "answerIndex": 0,
+    "explanation": "Following the slope upward guarantees locating a local peak in O(log N) time."
+  },
+  {
+    "id": 17,
+    "algorithm": "Binary Search",
+    "question": "What is Ternary Search compared to Binary Search?",
+    "options": ["Divides range into three parts using 2 midpoints, ideal for unimodal functions", "Uses 3 threads", "Searches base-3 numbers", "Sorts 3 arrays"],
+    "answerIndex": 0,
+    "explanation": "Ternary search evaluates 2 split points to find the extremum of a unimodal function."
+  },
+  {
+    "id": 18,
+    "algorithm": "Binary Search",
+    "question": "Can Binary Search find an element in a Rotated Sorted Array in O(log N)?",
+    "options": ["Yes, because at least one half (left or right) is always normally sorted", "No, rotation destroys binary search", "Only if pivot is index 0", "Only for even arrays"],
+    "answerIndex": 0,
+    "explanation": "Checking whether left or right half is sorted allows identifying which subarray contains the target in O(log N)."
+  },
+  {
+    "id": 19,
+    "algorithm": "Binary Search",
+    "question": "What is Interpolation Search in relation to Binary Search?",
+    "options": ["Estimates position using linear interpolation for uniformly distributed numerical data in O(log log N) average", "Searches strings", "Non-numerical search", "Parallel search"],
+    "answerIndex": 0,
+    "explanation": "Interpolation search estimates probe position based on key value, achieving O(log log N) on uniform inputs."
+  },
+  {
+    "id": 20,
+    "algorithm": "Binary Search",
+    "question": "What is the loop invariant maintained by Binary Search?",
+    "options": ["If the target exists in the array, it must reside within indices [low, high]", "low is always 0", "high is always N", "mid is always even"],
+    "answerIndex": 0,
+    "explanation": "The core invariant guarantees the search interval [low, high] strictly encloses the target if it exists."
+  }
+]

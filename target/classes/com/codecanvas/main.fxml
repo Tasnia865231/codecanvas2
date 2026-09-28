@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.codecanvas.controller.MainController"
+            stylesheets="@style.css">
+
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="New" onAction="#onFileNew"/>
+                    <MenuItem text="Open" onAction="#onFileOpen"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem text="Exit" onAction="#onFileExit"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="statusLabel" styleClass="status-bar" text="Ready"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ======================= TAB 1: ALGORITHM VISUALIZER ======================= -->
+            <Tab text="Algorithm Visualizer">
+                <ScrollPane fitToWidth="true">
+                <GridPane hgap="16" vgap="12">
+                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- ListView of algorithms -->
+                    <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Algorithms" styleClass="section-title"/>
+                        <ListView fx:id="algoListView" prefHeight="140"/>
+                        <Label fx:id="algoSelectionLabel" text="Selected: none"/>
+                    </VBox>
+
+                    <!-- TreeView category hierarchy -->
+                    <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Category Hierarchy" styleClass="section-title"/>
+                        <TreeView fx:id="categoryTreeView" prefHeight="140"/>
+                        <Label fx:id="treeSelectionLabel" text="Clicked: none"/>
+                    </VBox>
+
+                    <!-- Accumulate / ProgressBar -->
+                    <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Accumulate to N" styleClass="section-title"/>
+                        <HBox spacing="8">
+                            <TextField fx:id="accumulateInputField" promptText="Target N" prefWidth="100"/>
+                            <Button fx:id="accumulateButton" text="Accumulate" onAction="#onAccumulate"/>
+                        </HBox>
+                        <ProgressBar fx:id="accumulateProgressBar" progress="0" prefWidth="220"/>
+                        <Label fx:id="accumulateStatusLabel" text="Count: 0 / N"/>
+                    </VBox>
+
+                    <!-- Slider -> font size -->
+                    <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Font Size Slider" styleClass="section-title"/>
+                        <Slider fx:id="fontSizeSlider" min="10" max="36" value="14"/>
+                        <Label fx:id="sliderTargetLabel" text="Sample Text">
+                            <font><Font size="14"/></font>
+                        </Label>
+                    </VBox>
+
+                    <!-- Spinner -->
+                    <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label text="Quantity Spinner" styleClass="section-title"/>
+                        <HBox spacing="8">
+                            <Spinner fx:id="quantitySpinner" editable="true" prefWidth="90"/>
+                            <Button fx:id="showQuantityButton" text="Show Quantity"/>
+                        </HBox>
+                        <Label fx:id="quantityLabel" text="Quantity: -"/>
+                    </VBox>
+
+                    <!-- ColorPicker -->
+                    <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Color Picker" styleClass="section-title"/>
+                        <ColorPicker fx:id="labelColorPicker" onAction="#onColorChanged"/>
+                        <Label fx:id="colorTargetLabel" text="Colorized Text"/>
+                    </VBox>
+                </GridPane>
+                </ScrollPane>
+            </Tab>
+
+            <!-- ================= TAB 2: USER PROFILE / DEMO DASHBOARD ================= -->
+            <Tab text="User Profile / Demo Dashboard">
+                <ScrollPane fitToWidth="true">
+                <VBox spacing="14">
+                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+
+                    <!-- TableView + person form -->
+                    <Label text="People (SQLite-backed)" styleClass="section-title"/>
+                    <TableView fx:id="personTable" prefHeight="150">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                            <TableColumn fx:id="nameColumn" text="Name" prefWidth="140"/>
+                            <TableColumn fx:id="levelColumn" text="Level" prefWidth="110"/>
+                            <TableColumn fx:id="dobColumn" text="DOB" prefWidth="110"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <TextField fx:id="personNameField" promptText="Name" prefWidth="140"/>
+                        <ChoiceBox fx:id="personLevelChoiceBox" prefWidth="120"/>
+                        <DatePicker fx:id="personDobPicker" prefWidth="130"/>
+                        <Button fx:id="addPersonButton" text="Add" onAction="#onAddPerson"/>
+                        <Button fx:id="updatePersonButton" text="Update" onAction="#onUpdatePerson"/>
+                        <Button fx:id="deletePersonButton" text="Delete" onAction="#onDeletePerson"/>
+                    </HBox>
+
+                    <Separator/>
+
+                    <HBox spacing="24">
+                        <!-- Image controls -->
+                        <VBox spacing="6">
+                            <Label text="Profile Image" styleClass="section-title"/>
+                            <ImageView fx:id="profileImageView" fitWidth="120" fitHeight="120" preserveRatio="true"/>
+                            <HBox spacing="6">
+                                <Button fx:id="changeImageButton" text="Change Image" onAction="#onChangeImage"/>
+                                <Button fx:id="browseImageButton" text="Browse..." onAction="#onBrowseImage"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Radio + ToggleGroup -->
+                        <VBox spacing="6">
+                            <Label text="Skill Level" styleClass="section-title"/>
+                            <RadioButton fx:id="beginnerRadio" text="Beginner" selected="true"/>
+                            <RadioButton fx:id="intermediateRadio" text="Intermediate"/>
+                            <RadioButton fx:id="expertRadio" text="Expert"/>
+                            <Label fx:id="skillLevelLabel" text="Level: Beginner"/>
+                        </VBox>
+
+                        <!-- CheckBoxes -->
+                        <VBox spacing="6">
+                            <Label text="Hobbies" styleClass="section-title"/>
+                            <CheckBox fx:id="readingCheck" text="Reading"/>
+                            <CheckBox fx:id="gamingCheck" text="Gaming"/>
+                            <CheckBox fx:id="travelingCheck" text="Traveling"/>
+                            <Button fx:id="submitHobbiesButton" text="Submit" onAction="#onSubmitHobbies"/>
+                            <Label fx:id="hobbiesLabel" text="Hobbies: none"/>
+                        </VBox>
+                    </HBox>
+
+                    <Separator/>
+
+                    <HBox spacing="24">
+                        <!-- ChoiceBox theme -->
+                        <VBox spacing="6">
+                            <Label text="Theme" styleClass="section-title"/>
+                            <ChoiceBox fx:id="themeChoiceBox" prefWidth="120"/>
+                        </VBox>
+
+                        <!-- ComboBox country -->
+                        <VBox spacing="6">
+                            <Label text="Country" styleClass="section-title"/>
+                            <ComboBox fx:id="countryComboBox" prefWidth="150"/>
+                        </VBox>
+
+                        <!-- DatePicker -->
+                        <VBox spacing="6">
+                            <Label text="Date of Birth" styleClass="section-title"/>
+                            <DatePicker fx:id="dobPicker" onAction="#onDobChanged" prefWidth="150"/>
+                            <Label fx:id="dobLabel" text="DOB: -"/>
+                        </VBox>
+                    </HBox>
+
+                    <Separator/>
+
+                    <HBox spacing="24">
+                        <!-- TextArea -->
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Notes" styleClass="section-title"/>
+                            <TextArea fx:id="notesTextArea" prefRowCount="4" prefWidth="260" wrapText="true"/>
+                            <Button fx:id="clearNotesButton" text="Clear" onAction="#onClearNotes"/>
+                        </VBox>
+
+                        <!-- Password -->
+                        <VBox spacing="6">
+                            <Label text="Password" styleClass="section-title"/>
+                            <PasswordField fx:id="passwordField" promptText="Password"/>
+                            <TextField fx:id="passwordVisibleField" promptText="Password" visible="false" managed="false"/>
+                            <Button fx:id="togglePasswordButton" text="Show" onAction="#onTogglePassword"/>
+                        </VBox>
+                    </HBox>
+
+                    <Separator/>
+
+                    <!-- Alerts -->
+                    <VBox spacing="6">
+                        <Label text="Alert Dialogs" styleClass="section-title"/>
+                        <HBox spacing="8">
+                            <Button fx:id="infoAlertButton" text="Info" onAction="#onInfoAlert"/>
+                            <Button fx:id="warningAlertButton" text="Warning" onAction="#onWarningAlert"/>
+                            <Button fx:id="errorAlertButton" text="Error" onAction="#onErrorAlert"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- ==================== TAB 3: DATABASE & API SYNC ==================== -->
+            <Tab text="Database &amp; API Sync">
+                <VBox spacing="12">
+                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                    <Label text="Execution Traces" styleClass="section-title"/>
+                    <TableView fx:id="traceTable" prefHeight="220">
+                        <columns>
+                            <TableColumn fx:id="traceIdColumn" text="Trace ID" prefWidth="80"/>
+                            <TableColumn fx:id="traceAlgoColumn" text="Algorithm" prefWidth="220"/>
+                            <TableColumn fx:id="traceOpsColumn" text="Comparisons" prefWidth="110"/>
+                            <TableColumn fx:id="traceStatusColumn" text="Status" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="8">
+                        <Button fx:id="loadFromDbButton" text="Load from SQLite" onAction="#onLoadTracesFromDb"/>
+                        <Button fx:id="fetchFromApiButton" text="Fetch from API" onAction="#onFetchTracesFromApi"/>
+                        <Button fx:id="saveFetchedButton" text="Save Fetched to SQLite" onAction="#onSaveFetchedTraces"/>
+                    </HBox>
+                    <Label fx:id="syncStatusLabel" text="Sync status: idle"/>
+                    <Label text="Raw JSON Response" styleClass="section-title"/>
+                    <TextArea fx:id="jsonRawTextArea" editable="false" prefHeight="150" wrapText="true"/>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

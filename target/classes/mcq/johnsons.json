@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "algorithm": "Johnson's",
+    "question": "What is the primary purpose of Johnson's algorithm?",
+    "options": ["All-pairs shortest paths on sparse graphs with negative edge weights", "Maximum flow", "String matching", "Minimum cut"],
+    "answerIndex": 0,
+    "explanation": "Johnson's algorithm efficiently computes APSP on sparse graphs by reweighting edges."
+  },
+  {
+    "id": 2,
+    "algorithm": "Johnson's",
+    "question": "What is the time complexity of Johnson's algorithm using Fibonacci Heaps?",
+    "options": ["O(V^2 log V + V * E)", "O(V^3)", "O(V * E)", "O(E log V)"],
+    "answerIndex": 0,
+    "explanation": "Reweighting takes O(V * E), followed by V runs of Dijkstra taking O(V^2 log V + V * E)."
+  },
+  {
+    "id": 3,
+    "algorithm": "Johnson's",
+    "question": "How does Johnson's algorithm eliminate negative edge weights without altering shortest paths?",
+    "options": ["Reweighting using vertex potentials h(u) computed by Bellman-Ford", "Adding a global constant C to all edges", "Deleting negative edges", "Squaring all weights"],
+    "answerIndex": 0,
+    "explanation": "Edge reweighting w'(u, v) = w(u, v) + h(u) - h(v) ensures non-negative weights and preserves path optimality."
+  },
+  {
+    "id": 4,
+    "algorithm": "Johnson's",
+    "question": "Why is adding a constant C to all edge weights invalid for shortest paths?",
+    "options": ["Paths with more edges receive more penalties (k * C), distorting path comparisons", "It causes integer overflow", "It makes all weights negative", "It changes the graph topology"],
+    "answerIndex": 0,
+    "explanation": "A 5-edge path receives 5C while a 1-edge path receives 1C, favoring fewer edges over lower true sum."
+  },
+  {
+    "id": 5,
+    "algorithm": "Johnson's",
+    "question": "Which algorithm is invoked first in Johnson's algorithm to compute vertex potentials h(v)?",
+    "options": ["Bellman-Ford from a new virtual super-source", "Kruskal's algorithm", "QuickSort", "BFS"],
+    "answerIndex": 0,
+    "explanation": "Bellman-Ford runs from a virtual source node connected to all vertices with weight 0."
+  },
+  {
+    "id": 6,
+    "algorithm": "Johnson's",
+    "question": "What happens if Bellman-Ford detects a negative cycle during the initial phase of Johnson's algorithm?",
+    "options": ["The algorithm terminates reporting that negative cycles exist", "It ignores the cycle", "It removes the cycle edges", "It resets weights to 0"],
+    "answerIndex": 0,
+    "explanation": "A negative cycle makes shortest paths undefined, so Johnson's algorithm aborts."
+  },
+  {
+    "id": 7,
+    "algorithm": "Johnson's",
+    "question": "After reweighting edges, which algorithm is run V times in Johnson's algorithm?",
+    "options": ["Dijkstra's algorithm", "Breadth-First Search", "Depth-First Search", "Floyd-Warshall"],
+    "answerIndex": 0,
+    "explanation": "Dijkstra's algorithm is run once from each vertex since all reweighted edges are guaranteed non-negative."
+  },
+  {
+    "id": 8,
+    "algorithm": "Johnson's",
+    "question": "How is the true distance dist(u, v) recovered from the reweighted distance dist'(u, v)?",
+    "options": ["dist(u, v) = dist'(u, v) - h(u) + h(v)", "dist(u, v) = dist'(u, v) * 2", "dist(u, v) = dist'(u, v) + h(u)", "dist(u, v) = dist'(u, v) / V"],
+    "answerIndex": 0,
+    "explanation": "Telescoping cancellation yields dist(u, v) = dist'(u, v) - h(u) + h(v)."
+  },
+  {
+    "id": 9,
+    "algorithm": "Johnson's",
+    "question": "On which type of graph is Johnson's algorithm strictly faster than Floyd-Warshall?",
+    "options": ["Sparse graphs where E << V^2", "Complete graphs", "Graphs with 0 edges", "Only trees"],
+    "answerIndex": 0,
+    "explanation": "On sparse graphs, O(V^2 log V + V * E) is significantly faster than Floyd-Warshall's O(V^3)."
+  },
+  {
+    "id": 10,
+    "algorithm": "Johnson's",
+    "question": "What is the weight of edges connecting the virtual super-source node s to every other vertex in Johnson's?",
+    "options": ["0", "1", "-1", "Infinity"],
+    "answerIndex": 0,
+    "explanation": "Virtual edges have weight 0 so that h(v) represents the shortest distance from s to v."
+  },
+  {
+    "id": 11,
+    "algorithm": "Johnson's",
+    "question": "Why are reweighted edge costs w'(u, v) guaranteed to be >= 0?",
+    "options": ["By triangle inequality in shortest paths: h(v) <= h(u) + w(u, v)", "Because of random seeds", "Because h values are positive", "Because edges are undirected"],
+    "answerIndex": 0,
+    "explanation": "Shortest path triangle inequality h(v) <= h(u) + w(u, v) implies w(u, v) + h(u) - h(v) >= 0."
+  },
+  {
+    "id": 12,
+    "algorithm": "Johnson's",
+    "question": "What is the space complexity of Johnson's algorithm?",
+    "options": ["O(V^2) to store the all-pairs output distance matrix", "O(1)", "O(V^3)", "O(E * V^2)"],
+    "answerIndex": 0,
+    "explanation": "Storing the all-pairs shortest path matrix requires O(V^2) memory."
+  },
+  {
+    "id": 13,
+    "algorithm": "Johnson's",
+    "question": "If a graph has only non-negative edge weights from the start, does Johnson's algorithm require Bellman-Ford?",
+    "options": ["No, it can directly run Dijkstra V times without reweighting", "Yes, Bellman-Ford is always mandatory", "It throws an error", "Only if undirected"],
+    "answerIndex": 0,
+    "explanation": "Without negative weights, potentials are not needed and V runs of Dijkstra suffice."
+  },
+  {
+    "id": 14,
+    "algorithm": "Johnson's",
+    "question": "Can Johnson's algorithm be parallelized?",
+    "options": ["Yes, the V independent Dijkstra runs can execute concurrently across threads", "No, Dijkstra runs must be strictly sequential", "Only on GPUs", "Only for 2 threads"],
+    "answerIndex": 0,
+    "explanation": "Each Dijkstra run from vertex i is completely independent, allowing trivial multi-core parallelization."
+  },
+  {
+    "id": 15,
+    "algorithm": "Johnson's",
+    "question": "What is the reweighted length of any cycle in Johnson's algorithm?",
+    "options": ["Equal to its original length", "Zero", "Twice its original length", "-Infinity"],
+    "answerIndex": 0,
+    "explanation": "In a cycle, sum of h(u) - h(v) telescopes to 0, leaving the cycle sum identical to the original."
+  },
+  {
+    "id": 16,
+    "algorithm": "Johnson's",
+    "question": "Who invented Johnson's algorithm?",
+    "options": ["Donald B. Johnson (1977)", "Robert Floyd", "Edsger Dijkstra", "Richard Bellman"],
+    "answerIndex": 0,
+    "explanation": "Donald B. Johnson published the algorithm in 1977."
+  },
+  {
+    "id": 17,
+    "algorithm": "Johnson's",
+    "question": "In a graph with V = 1000 and E = 2000, which APSP algorithm is preferable?",
+    "options": ["Johnson's algorithm (sparse)", "Floyd-Warshall", "Brute force DFS", "Selection Sort"],
+    "answerIndex": 0,
+    "explanation": "With E = 2V, Johnson's algorithm runs orders of magnitude faster than Floyd-Warshall's 10^9 operations."
+  },
+  {
+    "id": 18,
+    "algorithm": "Johnson's",
+    "question": "What is the vertex potential h(u) mathematically equal to?",
+    "options": ["The shortest path distance from the virtual source s to u", "The degree of vertex u", "The index of u", "The in-degree minus out-degree"],
+    "answerIndex": 0,
+    "explanation": "h(u) = dist(s, u) computed by Bellman-Ford."
+  },
+  {
+    "id": 19,
+    "algorithm": "Johnson's",
+    "question": "Does Johnson's algorithm work on disconnected graphs?",
+    "options": ["Yes, the virtual source connects to all vertices ensuring reachability in the potential phase", "No", "Only if connected", "Only on bipartite graphs"],
+    "answerIndex": 0,
+    "explanation": "The virtual source has directed edges to every vertex, ensuring full reachability."
+  },
+  {
+    "id": 20,
+    "algorithm": "Johnson's",
+    "question": "What is the primary bottleneck in Johnson's algorithm on very dense graphs?",
+    "options": ["The V Dijkstra runs approach O(V^3), losing advantage over Floyd-Warshall", "Bellman-Ford", "Memory allocation", "String parsing"],
+    "answerIndex": 0,
+    "explanation": "When E ≈ V^2, V runs of Dijkstra take O(V^3), where Floyd-Warshall's simpler loops are faster in practice."
+  }
+]
